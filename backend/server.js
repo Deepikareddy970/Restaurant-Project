@@ -123,7 +123,10 @@ app.use(cors({
                     origin.startsWith('http://10.') || 
                     origin.startsWith('http://172.');
                     
-    if (isLocal || allowedOrigins.includes(origin) || origin === CORS_ORIGIN) {
+    const isRenderSubdomain = origin.endsWith('.onrender.com');
+    const isAllowedCustom = CORS_ORIGIN && CORS_ORIGIN.split(',').map(o => o.trim()).includes(origin);
+                    
+    if (isLocal || allowedOrigins.includes(origin) || isRenderSubdomain || isAllowedCustom) {
       callback(null, true);
     } else {
       callback(null, false);
