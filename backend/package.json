@@ -1,0 +1,20 @@
+{
+  "name": "guramrit-backend",
+  "version": "1.0.0",
+  "description": "API Server for Guramrit Resto & Cafe",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.2.0",
+    "express-validator": "^7.0.1",
+    "mongoose": "^9.9.1",
+    "nodemailer": "^9.0.3"
+  }
+}
