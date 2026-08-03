@@ -67,6 +67,12 @@ const GALLERY_IMAGES = [
 
 // --- INIT APP CONTROLLER ---
 document.addEventListener("DOMContentLoaded", () => {
+  // Update Owner Portal URL dynamically if production API_BASE_URL is set
+  const ownerPortalLink = document.querySelector('a[href="/admin"]');
+  if (ownerPortalLink && API_BASE_URL) {
+    ownerPortalLink.href = `${API_BASE_URL}/admin`;
+  }
+
   initSplashScreen(); // Initialize splash screen first!
   initScrollEffects();
   initMobileMenu();
