@@ -1,8 +1,6 @@
 // Guramrit Resto & Cafe - Main JS Controller
 
-// API base URL configuration (uses Vite proxy in development, relative in production)
-
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+const API_BASE_URL = '';
 
 
 // SPLASH SCREEN CONFIGURATION (Easily editable loading messages, timings, etc.)
