@@ -1,7 +1,9 @@
 // Guramrit Resto & Cafe - Main JS Controller
 
 // API base URL configuration (uses Vite proxy in development, relative in production)
-const API_BASE_URL = '';
+
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 
 // SPLASH SCREEN CONFIGURATION (Easily editable loading messages, timings, etc.)
 const SPLASH_CONFIG = {
@@ -81,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // 1. SCROLL EFFECTS & REVEALS
 function initScrollEffects() {
   const header = document.getElementById("header");
-  
+
   window.addEventListener("scroll", () => {
     if (window.scrollY > 40) {
       header.classList.add("scrolled");
@@ -110,7 +112,7 @@ function initScrollEffects() {
 function initMobileMenu() {
   const burgerBtn = document.getElementById("burger-btn");
   const navMobile = document.getElementById("nav-mobile");
-  
+
   burgerBtn.addEventListener("click", () => {
     const isActive = burgerBtn.classList.toggle("active");
     navMobile.classList.toggle("active");
@@ -151,10 +153,10 @@ const CATEGORY_MAP = {
 // 3. LOAD AND DYNAMICALLY RENDER THE MENU FROM BACKEND OR FALLBACK
 async function loadAndInitMenu() {
   const grid = document.getElementById("menu-grid");
-  
+
   try {
     grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--color-text-muted);">Loading our fresh culinary menu...</div>`;
-    
+
     let rawMenuObject = null;
     try {
       const res = await fetch(`${API_BASE_URL}/api/menu`);
@@ -184,7 +186,7 @@ async function loadAndInitMenu() {
       }
     });
     MENU_DATA = flatItems;
-    
+
     // Setup Search Event Listener
     const searchInput = document.getElementById("menu-search");
     if (searchInput) {
@@ -231,7 +233,7 @@ function renderMenu() {
   if (!grid) return;
 
   grid.style.opacity = 0;
-  
+
   setTimeout(() => {
     grid.innerHTML = "";
 
@@ -245,8 +247,8 @@ function renderMenu() {
 
     // 3. Filter by search query
     if (searchQuery) {
-      items = items.filter(item => 
-        item.name.toLowerCase().includes(searchQuery) || 
+      items = items.filter(item =>
+        item.name.toLowerCase().includes(searchQuery) ||
         (item.description || "").toLowerCase().includes(searchQuery)
       );
     }
@@ -335,11 +337,11 @@ function renderMenu() {
 // CREATE A MENU ITEM CARD DOM ELEMENT
 function createItemCard(item) {
   const card = document.createElement("div");
-  
+
   // Text-forward card details
   const hasImage = !!item.image;
   card.className = `menu-item-card border-${item.type} ${!hasImage ? 'no-image' : ''} reveal-left`;
-  
+
   // Format prices (handling multi-pricing objects and normal numbers)
   let priceHtml = "";
   let orderButtonHtml = "";
@@ -349,15 +351,15 @@ function createItemCard(item) {
       priceHtml = `<span class="menu-item-price">₹${item.price.default}</span>`;
       orderButtonHtml = `<button class="btn btn-secondary add-to-order-btn" data-id="${item.id}" data-size="" style="margin-top: 8px; padding: 4px 10px; font-size: 0.75rem; text-transform: none;">Add to Order (₹${item.price.default})</button>`;
     } else {
-      priceHtml = `<div class="menu-price-group">` + 
+      priceHtml = `<div class="menu-price-group">` +
         Object.entries(item.price).map(([size, value]) => {
           if (size === "default") {
             return `<span class="menu-price-tag">₹${value}</span>`;
           }
           return `<span class="menu-price-tag">${size}: ₹${value}</span>`;
-        }).join('') + 
+        }).join('') +
         `</div>`;
-      orderButtonHtml = `<div style="display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;">` + 
+      orderButtonHtml = `<div style="display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;">` +
         Object.entries(item.price).map(([size, value]) => {
           if (size === "default") return '';
           return `<button class="btn btn-secondary add-to-order-btn" data-id="${item.id}" data-size="${size}" style="padding: 4px 10px; font-size: 0.75rem; text-transform: none;">Add ${size} (₹${value})</button>`;
@@ -398,11 +400,11 @@ function initBookingWizard() {
   const stepContent1 = document.getElementById("step-1-content");
   const stepContent2 = document.getElementById("step-2-content");
   const stepContent3 = document.getElementById("step-3-content");
-  
+
   const stepPill1 = document.getElementById("progress-step-1");
   const stepPill2 = document.getElementById("progress-step-2");
   const stepPill3 = document.getElementById("progress-step-3");
-  
+
   const btnPrev = document.getElementById("btn-prev");
   const btnNext = document.getElementById("btn-next");
   const bookingForm = document.getElementById("booking-form");
@@ -434,13 +436,13 @@ function initBookingWizard() {
       inputTime.appendChild(opt);
     });
   }
-  
+
   inputSession.addEventListener("change", (e) => {
     updateTimeOptions(e.target.value);
   });
-  
+
   updateTimeOptions("Lunch");
-  
+
   if (bookingForm) {
     bookingForm.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -467,7 +469,7 @@ function initBookingWizard() {
     stepContent1.style.display = "none";
     stepContent2.style.display = "none";
     stepContent3.style.display = "none";
-    
+
     stepPill1.className = "progress-step";
     stepPill2.className = "progress-step";
     stepPill3.className = "progress-step";
@@ -498,7 +500,7 @@ function initBookingWizard() {
   // STEP VALIDATION
   function validateStep(stepNum) {
     let isValid = true;
-    
+
     if (stepNum === 1) {
       if (!inputDate.value) {
         inputDate.style.borderColor = "var(--color-accent)";
@@ -510,7 +512,7 @@ function initBookingWizard() {
       const name = document.getElementById("book-name");
       const email = document.getElementById("book-email");
       const phone = document.getElementById("book-phone");
-      
+
       const errName = document.getElementById("error-name");
       const errEmail = document.getElementById("error-email");
       const errPhone = document.getElementById("error-phone");
@@ -544,7 +546,7 @@ function initBookingWizard() {
         errPhone.className = "error-msg sr-only";
       }
     }
-    
+
     return isValid;
   }
 
@@ -643,7 +645,7 @@ function initBookingWizard() {
 
     } catch (err) {
       console.error("Booking error:", err);
-      
+
       // Inject error banner inside UI
       let errBanner = document.getElementById("booking-error-banner");
       if (!errBanner) {
@@ -655,7 +657,7 @@ function initBookingWizard() {
       }
       errBanner.innerHTML = err.message;
       errBanner.style.display = "block";
-      
+
     } finally {
       // Re-enable button
       btnNext.disabled = false;
@@ -675,7 +677,7 @@ function initBookingWizard() {
       if (widgetDate) {
         document.getElementById("book-date").value = widgetDate;
       }
-      
+
       if (widgetTime.includes("12:00") || widgetTime.includes("01:30")) {
         inputSession.value = "Lunch";
       } else {
@@ -685,7 +687,7 @@ function initBookingWizard() {
       inputTime.value = widgetTime;
 
       document.getElementById("booking").scrollIntoView({ behavior: "smooth" });
-      
+
       setTimeout(() => {
         document.getElementById("book-guests").focus();
       }, 800);
@@ -701,7 +703,7 @@ function initLightboxGallery() {
   const closeBtn = document.getElementById("lightbox-close");
   const prevBtn = document.getElementById("lightbox-prev");
   const nextBtn = document.getElementById("lightbox-next");
-  
+
   let currentIdx = 0;
 
   function openLightbox(idx) {
@@ -741,7 +743,7 @@ function initLightboxGallery() {
 
   document.addEventListener("keydown", (e) => {
     if (!lightbox.classList.contains("active")) return;
-    
+
     if (e.key === "Escape") closeLightbox();
     if (e.key === "ArrowRight") showNext();
     if (e.key === "ArrowLeft") showPrev();
@@ -828,10 +830,10 @@ function initComboOffers() {
 
   // 1. Render all 3 offer cards dynamically
   offersGrid.innerHTML = COMBO_OFFERS.map(offer => {
-    const ribbonHtml = offer.ribbon 
-      ? `<div class="offer-card-ribbon ${offer.ribbonClass || ''}">${offer.ribbon}</div>` 
+    const ribbonHtml = offer.ribbon
+      ? `<div class="offer-card-ribbon ${offer.ribbonClass || ''}">${offer.ribbon}</div>`
       : "";
-      
+
     const itemsHtml = offer.items.map(item => `<li>${item}</li>`).join("");
 
     return `
@@ -949,7 +951,7 @@ function initSplashScreen() {
     const title = splash.querySelector(".splash-title");
     const tagline = splash.querySelector(".splash-tagline");
     const loaderContainer = splash.querySelector(".splash-loader-container");
-    
+
     if (logoContainer) logoContainer.classList.add("animate-in");
     if (title) title.classList.add("animate-in");
     if (tagline) tagline.classList.add("animate-in");
@@ -1022,7 +1024,7 @@ function initSplashScreen() {
 
     // Fade out splash screen
     splash.classList.add("fade-out");
-    
+
     // Enable normal scroll on body by removing inline styles and body-style block
     document.body.style.overflow = "";
     if (bodyStyle) {
@@ -1234,7 +1236,7 @@ function initDineInFlow() {
   // Wizard navigation transitions
   function showStep(stepNum) {
     currentStep = stepNum;
-    
+
     // Hide all panes
     pane1.style.display = "none";
     pane2.style.display = "none";
@@ -1266,7 +1268,7 @@ function initDineInFlow() {
     btnGotoStep2.addEventListener("click", () => {
       selectedTable = tableSelect.value;
       guestCount = parseInt(guestsSelect.value) || 1;
-      
+
       // Auto initialize category if not set
       if (!activeDineCat) {
         const cats = getMenuCategories();
@@ -1324,7 +1326,7 @@ function initDineInFlow() {
     btnGotoStep4.addEventListener("click", () => {
       const name = custNameInput.value.trim();
       const email = custEmailInput.value.trim();
-      
+
       if (!name) {
         alert("Please enter your name.");
         return;
@@ -1392,12 +1394,12 @@ function initDineInFlow() {
             } else if (errData && errData.errors && Array.isArray(errData.errors)) {
               errorMsg = errData.errors.map(e => e.msg).join(", ");
             }
-          } catch (_) {}
+          } catch (_) { }
           throw new Error(errorMsg);
         }
 
         const data = await response.json();
-        
+
         // Save order details to localStorage for persistence on page reload
         localStorage.setItem("activeDineInOrder", JSON.stringify({
           orderId: data.orderId,
@@ -1476,8 +1478,8 @@ function initDineInFlow() {
 
     // Filter by search query
     if (searchVal) {
-      dishes = dishes.filter(d => 
-        d.name.toLowerCase().includes(searchVal) || 
+      dishes = dishes.filter(d =>
+        d.name.toLowerCase().includes(searchVal) ||
         (d.description && d.description.toLowerCase().includes(searchVal))
       );
     }
@@ -1490,7 +1492,7 @@ function initDineInFlow() {
     dishes.forEach(dish => {
       const card = document.createElement("div");
       card.className = "dine-dish-card";
-      
+
       const cartItem = dineInCart.find(i => i.id === dish.id);
       const isVegSymbol = dish.type === "veg" ? "🟢" : "🔴";
 
@@ -1661,7 +1663,7 @@ function initDineInFlow() {
 
       const data = await response.json();
       const status = data.status || "pending";
-      
+
       updateStepperVisuals(status);
 
       // Handle email preview link if available (Ethereal test mail fallback)
@@ -1734,7 +1736,7 @@ function initDineInFlow() {
     announceEl.style.height = "1px";
     announceEl.style.overflow = "hidden";
     announceEl.textContent = `Order update: ${statusText}`;
-    
+
     document.body.appendChild(announceEl);
     setTimeout(() => announceEl.remove(), 3000);
   }
@@ -1757,7 +1759,7 @@ function initDineInFlow() {
         console.log(`[DineIn] Resuming active order tracking: ${parsed.orderId}`);
         startTrackingOrder(parsed.orderId, parsed.email);
       }
-    } catch (_) {}
+    } catch (_) { }
   }
 }
 
