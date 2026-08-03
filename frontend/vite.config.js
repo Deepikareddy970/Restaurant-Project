@@ -13,7 +13,7 @@ function backendServerPlugin() {
     configureServer(server) {
       const backendDir = path.resolve(__dirname, '../backend');
       console.log(`[Vite Plugin] Starting backend server in: ${backendDir}`);
-      
+
       backendProcess = spawn('node', ['server.js'], {
         cwd: backendDir,
         stdio: 'inherit',
@@ -59,7 +59,7 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    minify: 'terser',
+    minify: 'esbuild',
     sourcemap: true
   }
 });
