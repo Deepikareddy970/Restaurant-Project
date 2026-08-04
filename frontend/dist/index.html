@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guramrit Resto & Cafe | Multi-Cuisine AC Restaurant in JK Pur</title>
+  <meta name="description" content="Savor the essence of tradition at Guramrit Resto & Cafe, a premium Multi-Cuisine AC Restaurant in JK Pur, Rayagada, Odisha. Enjoy curated Indian, Chinese, and Seafood delicacies in cool comfort.">
+  
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Guramrit Resto & Cafe | Multi-Cuisine AC Restaurant">
+  <meta property="og:description" content="Experience a culinary journey like no other inside our air-conditioned sanctuary in JK Pur, Rayagada. Enjoy wood-fired details, Chinese appetisers, and seafood specialties.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200">
+  <meta name="twitter:card" content="summary_large_image">
+  
+  <!-- Preload Fonts and Stylesheets -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheets -->
+
+  <!-- Schema.org JSON-LD Metadata -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "name": "Guramrit Resto & Cafe",
+      "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200",
+      "description": "Multi-Cuisine AC Restaurant offering a premium culinary journey in Rayagada, Odisha.",
+      "servesCuisine": [
+        "North Indian",
+        "Chinese / Asian",
+        "Seafood",
+        "Tandoor"
+      ],
+      "priceRange": "$$",
+      "telephone": "+91-860-221-7770",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Cooperative Building, JKPM Road, JK Pur",
+        "addressLocality": "Rayagada District",
+        "addressRegion": "Odisha",
+        "postalCode": "765017",
+        "addressCountry": "IN"
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          "opens": "12:00",
+          "closes": "15:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          "opens": "18:00",
+          "closes": "22:00"
+        }
+      ],
+      "menu": "http://localhost:3000/#menu"
+    }
+  </script>
+  <style id="splash-body-style">
+    body {
+      overflow: hidden;
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/index-BSnfHvkf.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-D3CeH_Kq.css">
+</head>
+<body>
+
+  <!-- Splash / Loading Screen -->
+  <div id="splash-screen" class="splash-screen" role="dialog" aria-modal="true" aria-label="Loading Guramrit Resto & Cafe">
+    <!-- Floating background decorative elements -->
+    <div class="splash-bg-decorations">
+      <span class="decor-item item-1">🌶️</span>
+      <span class="decor-item item-2">🌾</span>
+      <span class="decor-item item-3">🌿</span>
+      <span class="decor-item item-4">✨</span>
+      <span class="decor-item item-5">🥄</span>
+      <span class="decor-item item-6">🍽️</span>
+    </div>
+    
+    <div class="splash-content">
+      <!-- Chef Hat Circular SVG Logo -->
+      <div class="splash-logo-container">
+        <svg class="splash-logo" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="46" fill="var(--color-bg)" stroke="var(--color-accent)" stroke-width="4" />
+          <!-- Chef Hat details -->
+          <path d="M50 20 C40 20 34 26 34 35 C29 35 25 39 25 45 C25 51 29 55 33 56 C33 61 38 66 45 66 L55 66 C62 66 67 61 67 56 C71 55 75 51 75 45 C75 39 71 35 66 35 C66 26 60 20 50 20 Z" fill="var(--color-text)" />
+          <path d="M35 70 L65 70 C68 70 70 72 70 75 C70 78 68 80 65 80 L35 80 C32 80 30 78 30 75 C30 72 32 70 35 70 Z" fill="var(--color-accent)" />
+        </svg>
+      </div>
+      
+      <h1 class="splash-title">Welcome to Guramrit Resto & Cafe</h1>
+      <p class="splash-tagline">Delicious Food Delivered Fresh</p>
+      
+      <!-- Loader & Progress -->
+      <div class="splash-loader-container">
+        <div class="splash-spinner" aria-hidden="true"></div>
+        <div class="splash-progress-track">
+          <div class="splash-progress-bar" id="splash-progress-bar"></div>
+        </div>
+        <div class="splash-status">
+          <span id="splash-loading-text" class="splash-loading-text">Preparing your experience</span>
+          <span id="splash-percentage" class="splash-percentage">0%</span>
+        </div>
+      </div>
+      
+      <!-- Skip button (fade-in after 2s) -->
+      <button id="splash-skip-btn" class="splash-skip-btn" aria-label="Skip splash screen">Skip to Menu</button>
+    </div>
+  </div>
+
+  <!-- Header Section -->
+  <header class="header" id="header" role="banner">
+    <div class="container header-inner">
+      <a href="#" class="logo" aria-label="Guramrit Resto & Cafe Home">
+        GURAMRIT<span>.</span>
+      </a>
+      
+      <nav class="nav-desktop" role="navigation" aria-label="Desktop Navigation">
+        <a href="#about" class="nav-link">Sanctuary</a>
+        <a href="#menu" class="nav-link">The Menu</a>
+        <a href="#" class="nav-link nav-dine-link" id="nav-order-link">🍽️ Dine In</a>
+        <a href="#booking" class="nav-link">Reservations</a>
+        <a href="#ambience" class="nav-link">Ambience</a>
+        <a href="#contact" class="nav-link">Find Us</a>
+        <a href="#booking" class="btn btn-primary" id="nav-book-btn">Book a Table</a>
+      </nav>
+
+      <button class="burger-btn" id="burger-btn" aria-expanded="false" aria-controls="nav-mobile" aria-label="Toggle Navigation Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Overlay -->
+  <nav class="nav-mobile-overlay" id="nav-mobile" aria-hidden="true" role="navigation" aria-label="Mobile Navigation">
+    <a href="#about" class="nav-link">Sanctuary</a>
+    <a href="#menu" class="nav-link">The Menu</a>
+    <a href="#" class="nav-link nav-dine-link" id="mobile-order-link">🍽️ Dine In</a>
+    <a href="#booking" class="nav-link">Reservations</a>
+    <a href="#ambience" class="nav-link">Ambience</a>
+    <a href="#contact" class="nav-link">Find Us</a>
+    <a href="#booking" class="btn btn-primary" id="mobile-menu-book-btn" style="margin-top: var(--space-md);">Book a Table</a>
+  </nav>
+
+  <!-- Main Content -->
+  <main id="main-content">
+    
+    <!-- Hero Section -->
+    <section class="hero" id="hero" aria-label="Welcome to Guramrit">
+      <div class="hero-bg">
+        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1600" alt="Wood-fired dining flames and grilled delicacies at Guramrit Resto & Cafe" class="hero-image">
+      </div>
+      <div class="hero-overlay"></div>
+      
+      <div class="container hero-content reveal">
+        <h1 class="font-serif">A Sanctuary of <span class="italic">Cool Comfort</span> & Global Flavors</h1>
+        <p class="hero-sub">Where wood-fired heritage meets contemporary cafe culture in climate-controlled luxury</p>
+        
+        <div class="hero-ctas">
+          <a href="#booking" class="btn btn-primary">Book a Table</a>
+          <a href="#" class="btn btn-secondary" id="hero-order-btn">🍽️ Dine In</a>
+        </div>
+        
+        <!-- Inline Booking Widget -->
+        <div class="hero-widget">
+          <div class="widget-item">
+            <label for="widget-guests">Guests</label>
+            <select id="widget-guests">
+              <option value="2">2 Guests</option>
+              <option value="4">4 Guests</option>
+              <option value="6">6 Guests</option>
+              <option value="8">8+ Guests</option>
+            </select>
+          </div>
+          <div class="widget-item">
+            <label for="widget-date">Date</label>
+            <input type="date" id="widget-date">
+          </div>
+          <div class="widget-item">
+            <label for="widget-time">Time</label>
+            <select id="widget-time">
+              <option value="12:00 PM">12:00 PM (Lunch)</option>
+              <option value="01:30 PM">01:30 PM (Lunch)</option>
+              <option value="07:00 PM">07:00 PM (Dinner)</option>
+              <option value="08:30 PM">08:30 PM (Dinner)</option>
+            </select>
+          </div>
+          <button class="btn btn-primary widget-btn" id="hero-widget-btn">Find Table</button>
+        </div>
+      </div>
+
+      <div class="scroll-indicator">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- Combo Offers Section -->
+    <section class="offers-section" id="special-offers" aria-label="Special Combo Offers">
+      <div class="container">
+        <div class="text-center reveal" style="margin-bottom: var(--space-xl);">
+          <h2 class="font-serif">Special <span class="italic">Combo Offers</span></h2>
+          <div class="heading-accent"></div>
+        </div>
+        <div class="offers-grid" id="offers-grid">
+          <!-- Dynamically rendered by renderOffers() in main.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Dine-In Promotion Card Section -->
+    <section class="dine-in-promo-section" id="dine-in-promo" aria-label="Premium Dine-In Ordering">
+      <div class="container">
+        <div class="dine-in-promo-card reveal">
+          <div class="dine-in-promo-content">
+            <span class="dine-in-badge">🍽️ Dine-In Table Ordering</span>
+            <h2 class="font-serif">Order From Your Table</h2>
+            <p>Skip the wait entirely. Order your favorite dishes directly from your phone while seated, and our team will prepare and serve them hot to your table. Real-time status updates are sent to your email.</p>
+            <button class="btn btn-dine-primary" id="home-dinein-card-btn">Start Dine-In Order</button>
+          </div>
+          <div class="dine-in-promo-image">
+            <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=800" alt="Beautifully set restaurant table with dine-in order service">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Occasion-Based Entry Points -->
+    <section class="occasions" id="about" aria-label="Experiences at Guramrit">
+      <div class="container">
+        <div class="text-center reveal">
+          <h2 class="font-serif">Designed for <span class="italic">Every Occasion</span></h2>
+          <p style="max-width: 600px; margin: var(--space-xs) auto 0;">Whether you seek a multi-course dinner feast, a cozy specialty brew, or a chilled haven from the elements, we frame the perfect atmosphere.</p>
+        </div>
+
+        <div class="grid grid-4 occasions-grid">
+          
+          <div class="occasion-card reveal-scale" style="transition-delay: 100ms;">
+            <div class="occasion-bg">
+              <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?q=80&w=600" alt="Candlelit intimate dining experience">
+            </div>
+            <div class="occasion-overlay"></div>
+            <div class="occasion-content">
+              <h3 class="font-serif italic">Intimate Gatherings</h3>
+              <p>Chilled candlelight corners, tailored plates, and exceptional wines.</p>
+            </div>
+          </div>
+
+          <div class="occasion-card reveal-scale" style="transition-delay: 200ms;">
+            <div class="occasion-bg">
+              <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=600" alt="Families sharing a rich multi-cuisine spread">
+            </div>
+            <div class="occasion-overlay"></div>
+            <div class="occasion-content">
+              <h3 class="font-serif italic">Family Feasts</h3>
+              <p>Generous tables for sharing global classics across generations.</p>
+            </div>
+          </div>
+
+          <div class="occasion-card reveal-scale" style="transition-delay: 300ms;">
+            <div class="occasion-bg">
+              <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=600" alt="Modern espresso machine and latte art">
+            </div>
+            <div class="occasion-overlay"></div>
+            <div class="occasion-content">
+              <h3 class="font-serif italic">Cafe &amp; Co-Working</h3>
+              <p>Specialty cold drip, light savory bites, and serene climate comfort.</p>
+            </div>
+          </div>
+
+          <div class="occasion-card reveal-scale" style="transition-delay: 400ms;">
+            <div class="occasion-bg">
+              <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=600" alt="Private chef's hearth event">
+            </div>
+            <div class="occasion-overlay"></div>
+            <div class="occasion-content">
+              <h3 class="font-serif italic">Private Events</h3>
+              <p>Custom menus, visual elegance, and dedicated hospitality staff.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- The Craft Philosophy (Brand Promise & Story) -->
+    <section class="philosophy" id="philosophy" aria-label="Our Culinary Philosophy">
+      <div class="container philosophy-inner reveal">
+        <h2 class="font-serif">The Art of <span class="italic">Atmosphere &amp; Taste</span></h2>
+        <p class="philosophy-text">
+          Guramrit is built as an all-weather refuge. Inside our perfectly climate-balanced walls, you will discover the sensory warmth of live wood-fired hearth cooking coupled with the refreshing crispness of an indoor retreat.
+        </p>
+        <p style="max-width: 700px; margin: 0 auto; color: var(--color-text-muted);">
+          Our culinary narrative spans regional Indian spices, fiery Italian wood-fired ovens, and the subtle, balanced elements of Asian wok cookery. Each dish, like our custom-roasted coffee, honors pristine sourcing and culinary craft.
+        </p>
+      </div>
+    </section>
+
+    <!-- Curated Menu Preview -->
+    <section class="menu-preview" id="menu" aria-label="Curated Menu Preview">
+      <div class="container">
+        <div class="text-center reveal" style="margin-bottom: var(--space-xl);">
+          <h2 class="font-serif">Our Multi-Cuisine <span class="italic">Menu</span></h2>
+          <p style="max-width: 600px; margin: var(--space-xs) auto 0;">Savor the essence of tradition with our extensive list of signature dishes. Filter by cuisine or search directly.</p>
+        </div>
+
+        <!-- Menu Search and Diet Filters -->
+        <div class="menu-controls reveal">
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="menu-search" placeholder="Search for your favorite dish...">
+          </div>
+          <div class="diet-filters">
+            <button class="diet-filter-btn active" data-diet="all">All Dishes</button>
+            <button class="diet-filter-btn" data-diet="veg">
+              <span class="dot dot-veg"></span> Veg
+            </button>
+            <button class="diet-filter-btn" data-diet="non-veg">
+              <span class="dot dot-nonveg"></span> Non-Veg
+            </button>
+            <button class="diet-filter-btn" data-diet="seafood">
+              <span class="dot dot-seafood"></span> Seafood
+            </button>
+          </div>
+        </div>
+
+        <!-- Menu Tabs -->
+        <div class="menu-tabs reveal">
+          <button class="menu-tab-btn active" data-category="Indian Tandoor">Indian Tandoor</button>
+          <button class="menu-tab-btn" data-category="Indian Curries">Indian Curries</button>
+          <button class="menu-tab-btn" data-category="Chinese">Chinese</button>
+          <button class="menu-tab-btn" data-category="Soups & Sea Food">Soups &amp; Sea Food</button>
+          <button class="menu-tab-btn" data-category="Rice & Biryani">Rice &amp; Biryani</button>
+          <button class="menu-tab-btn" data-category="Breads">Breads</button>
+          <button class="menu-tab-btn" data-category="Salads & Beverages">Salads &amp; Beverages</button>
+        </div>
+
+        <!-- Menu Items Grid -->
+        <div class="grid grid-2 menu-grid reveal" id="menu-grid">
+          <!-- Dynamically populated by main.js -->
+        </div>
+
+        <div class="text-center reveal" style="margin-top: var(--space-xl);">
+          <a href="#booking" class="btn btn-secondary">Reserve a Table to Taste</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Social Proof and Trust (Proximity to Booking Engine) -->
+    <section class="testimonials" id="reviews" aria-label="Guest Testimonials">
+      <div class="container">
+        <div class="text-center reveal" style="margin-bottom: var(--space-lg);">
+          <div class="testimonial-rating" aria-label="4.8 out of 5 stars rating">
+            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+          </div>
+          <h2 class="font-serif" style="font-size: 1.75rem;">Highly Recommended by Our Guests</h2>
+          <p style="color: var(--color-text-soft);">4.8★ rating from over 4,500 verified local patrons</p>
+        </div>
+
+        <div class="grid grid-3">
+          
+          <div class="testimonial-card reveal" style="transition-delay: 100ms;">
+            <p class="testimonial-quote">"The mutton seekh from the wood-fired hearth was exceptionally tender, but what truly blew me away was the atmosphere. It is the perfect cool escape from the humid afternoon heat."</p>
+            <div class="testimonial-author">Aravind S. • Food Critic</div>
+          </div>
+
+          <div class="testimonial-card reveal" style="transition-delay: 200ms;">
+            <p class="testimonial-quote">"Guramrit bridges cafe culture and fine dining perfectly. I spent the morning working with their cold brew coffee in air-conditioned quiet, then transitioned into a wood-fired pizza lunch."</p>
+            <div class="testimonial-author">Meera K. • Casual Diner</div>
+          </div>
+
+          <div class="testimonial-card reveal" style="transition-delay: 300ms;">
+            <p class="testimonial-quote">"We celebrated my father's 60th birthday here. The multi-cuisine menu allowed everyone to find exactly what they loved, from paneer tikka to dim sums. Service was top-notch!"</p>
+            <div class="testimonial-author">Rohan M. • Family Gatherings</div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- The Booking Experience (Core Conversion Point) -->
+    <section class="booking-section" id="booking" aria-label="Reserve a Table">
+      <div class="container">
+        
+        <div class="booking-card reveal-scale">
+          
+          <div class="booking-header">
+            <h2 class="font-serif">Reserve Your <span class="italic">Table</span></h2>
+            <p>Secure a spot in our climate-controlled sanctuary. Easy, real-time booking confirmation.</p>
+          </div>
+
+          <!-- Wizard Progress -->
+          <div class="booking-progress">
+            <div class="progress-step active" id="progress-step-1" aria-label="Step 1: Reservation Details">1</div>
+            <div class="progress-step" id="progress-step-2" aria-label="Step 2: Guest Preferences">2</div>
+            <div class="progress-step" id="progress-step-3" aria-label="Step 3: Contact Details">3</div>
+          </div>
+
+          <!-- Form Element -->
+          <form id="booking-form" novalidate>
+            
+            <div class="booking-steps-container">
+              
+              <!-- STEP 1: Details -->
+              <div class="booking-step active" id="step-1-content">
+                <div class="booking-form-grid">
+                  <div class="form-group">
+                    <label for="book-guests">Party Size</label>
+                    <select id="book-guests" class="form-input">
+                      <option value="2">2 Guests</option>
+                      <option value="3">3 Guests</option>
+                      <option value="4">4 Guests</option>
+                      <option value="5">5 Guests</option>
+                      <option value="6">6 Guests</option>
+                      <option value="8">8+ Guests</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="book-date">Choose Date</label>
+                    <input type="date" id="book-date" class="form-input" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="book-session">Session</label>
+                    <select id="book-session" class="form-input">
+                      <option value="Lunch">Lunch (12:00 PM – 3:00 PM)</option>
+                      <option value="Dinner">Dinner (6:00 PM – 10:00 PM)</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="book-time">Preferred Time</label>
+                    <select id="book-time" class="form-input">
+                      <!-- Populated dynamically based on session -->
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- STEP 2: Preferences -->
+              <div class="booking-step" id="step-2-content">
+                <div class="booking-form-grid">
+                  <div class="form-group">
+                    <label for="book-occasion">Special Occasion</label>
+                    <select id="book-occasion" class="form-input">
+                      <option value="casual">Casual Dining / Social</option>
+                      <option value="birthday">Birthday Celebration</option>
+                      <option value="anniversary">Anniversary Dinner</option>
+                      <option value="business">Business Lunch / Meeting</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="book-seating">Seating Preference</label>
+                    <select id="book-seating" class="form-input">
+                      <option value="standard">Main Dining Room (Climate Control)</option>
+                      <option value="cafe">Cozy Cafe Lounge</option>
+                      <option value="hearth">Hearthside / Chef Counter view</option>
+                    </select>
+                  </div>
+                  <div class="form-group" style="grid-column: span 1; @media (min-width: 600px) { grid-column: span 2; }">
+                    <label for="book-notes">Special Requests &amp; Dietary Restrictions</label>
+                    <input type="text" id="book-notes" class="form-input" placeholder="e.g. Nut allergies, wheelchair access, high chair">
+                  </div>
+                </div>
+              </div>
+
+              <!-- STEP 3: Contact -->
+              <div class="booking-step" id="step-3-content">
+                <div class="booking-form-grid">
+                  <div class="form-group">
+                    <label for="book-name">Full Name</label>
+                    <input type="text" id="book-name" class="form-input" placeholder="Enter your full name" required>
+                    <span class="error-msg sr-only" id="error-name" style="color: var(--color-accent); font-size: 0.75rem;">Name is required</span>
+                  </div>
+                  <div class="form-group">
+                    <label for="book-email">Email Address</label>
+                    <input type="email" id="book-email" class="form-input" placeholder="name@example.com" required>
+                    <span class="error-msg sr-only" id="error-email" style="color: var(--color-accent); font-size: 0.75rem;">Enter a valid email</span>
+                  </div>
+                  <div class="form-group" style="grid-column: span 1; @media (min-width: 600px) { grid-column: span 2; }">
+                    <label for="book-phone">Phone Number</label>
+                    <input type="tel" id="book-phone" class="form-input" placeholder="e.g. +91 98765 43210" required>
+                    <span class="error-msg sr-only" id="error-phone" style="color: var(--color-accent); font-size: 0.75rem;">Enter a valid phone number</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Wizard Navigation -->
+            <div class="booking-nav" id="booking-nav-buttons">
+              <button type="button" class="btn btn-secondary" id="btn-prev" style="visibility: hidden;">Back</button>
+              <button type="button" class="btn btn-primary" id="btn-next">Next Step</button>
+            </div>
+            
+          </form>
+
+          <!-- SUCCESS CONTAINER -->
+          <div class="booking-success-card" id="booking-success" style="display: none;">
+            <div class="success-icon-wrap">
+              <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <h3 class="font-serif">Reservation Confirmed!</h3>
+            <p>Your table is reserved. We look forward to welcoming you into our refreshing dining sanctuary.</p>
+            
+            <div class="booking-summary-list">
+              <div class="booking-summary-row">
+                <span class="booking-summary-label">Name</span>
+                <span class="booking-summary-val" id="summary-name">-</span>
+              </div>
+              <div class="booking-summary-row">
+                <span class="booking-summary-label">Date &amp; Time</span>
+                <span class="booking-summary-val" id="summary-datetime">-</span>
+              </div>
+              <div class="booking-summary-row">
+                <span class="booking-summary-label">Party Size</span>
+                <span class="booking-summary-val" id="summary-guests">-</span>
+              </div>
+              <div class="booking-summary-row">
+                <span class="booking-summary-label">Ambience Seating</span>
+                <span class="booking-summary-val" id="summary-seating">-</span>
+              </div>
+            </div>
+
+            <p style="font-size: 0.8125rem; color: var(--color-text-soft); margin-bottom: var(--space-md);">A confirmation details receipt has been dispatched to your email &amp; phone.</p>
+            
+            <div style="display: flex; gap: var(--space-sm); justify-content: center; flex-wrap: wrap;">
+              <a href="#" class="btn btn-secondary" style="padding: var(--space-xs) var(--space-md);" id="add-to-calendar">Add to Calendar</a>
+              <button class="btn btn-primary" style="padding: var(--space-xs) var(--space-md);" id="btn-book-another">Book Another Table</button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Ambience Masonry Gallery -->
+    <section class="gallery" id="ambience" aria-label="Ambience &amp; Interiors Gallery">
+      <div class="container">
+        <div class="text-center reveal">
+          <h2 class="font-serif">A Glimpse of the <span class="italic">Sanctuary</span></h2>
+          <p style="max-width: 600px; margin: var(--space-xs) auto 0;">Step visually into our dining corners, custom espresso counter, and wood-fired preparations.</p>
+        </div>
+
+        <div class="gallery-grid">
+          
+          <div class="gallery-item reveal-scale" data-index="0">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=600" alt="Beautiful sunlit interior dining space with green vines at Guramrit Resto & Cafe">
+            <div class="gallery-hover-overlay">
+              <div class="gallery-hover-icon">🔍</div>
+            </div>
+          </div>
+
+          <div class="gallery-item reveal-scale" data-index="1">
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=600" alt="Wood-fired live grill hearth with orange flame embers">
+            <div class="gallery-hover-overlay">
+              <div class="gallery-hover-icon">🔍</div>
+            </div>
+          </div>
+
+          <div class="gallery-item reveal-scale" data-index="2">
+            <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=600" alt="Artisanal pour over coffee brewing with rich brown tones">
+            <div class="gallery-hover-overlay">
+              <div class="gallery-hover-icon">🔍</div>
+            </div>
+          </div>
+
+          <div class="gallery-item reveal-scale" data-index="3">
+            <img src="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?q=80&w=600" alt="Luxury Indian curry plating with aromatic gold saffron rice">
+            <div class="gallery-hover-overlay">
+              <div class="gallery-hover-icon">🔍</div>
+            </div>
+          </div>
+
+          <div class="gallery-item reveal-scale" data-index="4">
+            <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?q=80&w=600" alt="Intimate candlelit dining tables set with fine luxury glassware">
+            <div class="gallery-hover-overlay">
+              <div class="gallery-hover-icon">🔍</div>
+            </div>
+          </div>
+
+          <div class="gallery-item reveal-scale" data-index="5">
+            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=600" alt="Hand-stretched hot wood-fired pizza with bubbling cheese and fresh basil">
+            <div class="gallery-hover-overlay">
+              <div class="gallery-hover-icon">🔍</div>
+            </div>
+          </div>
+
+          <div class="gallery-item reveal-scale" data-index="6">
+            <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?q=80&w=600" alt="Steaming dim sums served in a traditional bamboo basket">
+            <div class="gallery-hover-overlay">
+              <div class="gallery-hover-icon">🔍</div>
+            </div>
+          </div>
+
+          <div class="gallery-item reveal-scale" data-index="7">
+            <img src="https://images.unsplash.com/photo-1587314168485-3236d6710814?q=80&w=600" alt="Saffron pistachio gourmet pastry dessert with gold leaf toppings">
+            <div class="gallery-hover-overlay">
+              <div class="gallery-hover-icon">🔍</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Find Us / Contact & Map Placeholder (Single Section - Generic Locations) -->
+    <section class="contact-section" id="contact" aria-label="Contact and Locations">
+      <div class="container">
+        
+        <div class="text-center reveal" style="margin-bottom: var(--space-xl);">
+          <h2 class="font-serif">Visit the <span class="italic">Sanctuary</span></h2>
+          <p style="max-width: 600px; margin: var(--space-xs) auto 0;">Get directions, view operational hours, or connect directly with our reservation team.</p>
+        </div>
+
+        <div class="grid grid-2">
+          
+          <!-- Contact details card -->
+          <div class="contact-card-info reveal-left">
+            <h3 class="font-serif">Guramrit Resto &amp; Cafe</h3>
+            <p>Our doors are open daily, welcoming you to escape the weather and enjoy authentic taste, warm &amp; cozy vibes inside our climate-controlled space.</p>
+            
+            <div class="info-item">
+              <div class="info-item-icon" aria-hidden="true">📍</div>
+              <div class="info-item-content">
+                <h4>Address</h4>
+                <p>Cooperative Building, JKPM Road,<br>JK Pur, PIN: 765017, Rayagada District, Odisha</p>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-item-icon" aria-hidden="true">📞</div>
+              <div class="info-item-content">
+                <h4>Reservations &amp; Enquiries</h4>
+                <p><a href="tel:+91-860-221-7770">+91-860-221-7770</a></p>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-item-icon" aria-hidden="true">📷</div>
+              <div class="info-item-content">
+                <h4>Instagram</h4>
+                <p><a href="https://instagram.com/guramrit.fnb" target="_blank" rel="noopener noreferrer">@guramrit.fnb</a></p>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-item-icon" aria-hidden="true">⏰</div>
+              <div class="info-item-content">
+                <h4>Opening Hours</h4>
+                <p>Afternoon: 12:00 PM – 3:00 PM IST<br>Evening: 6:00 PM – 10:00 PM IST</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Map placeholder card -->
+          <div class="map-placeholder reveal-right">
+            <div class="map-icon" aria-hidden="true">🗺️</div>
+            <h4 class="font-serif">Our Location in JK Pur</h4>
+            <p style="max-width: 320px; font-size: 0.875rem; margin-bottom: var(--space-md); color: var(--color-text-soft);">Cooperative Building, JKPM Road, JK Pur. Call us if you need help finding us!</p>
+            
+            <div style="display: flex; gap: var(--space-sm); justify-content: center; flex-wrap: wrap;">
+              <a href="https://maps.google.com/?q=Cooperative+Building,+JKPM+Road,+JK+Pur,+Rayagada,+Odisha" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding: var(--space-xs) var(--space-md);">Open Google Maps</a>
+              <a href="tel:+91-860-221-7770" class="btn btn-primary" style="padding: var(--space-xs) var(--space-md);">Call for Directions</a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Loyalty & Stay Connected Section -->
+    <section class="loyalty" id="loyalty" aria-label="Stay Connected">
+      <div class="container">
+        <div class="loyalty-inner reveal">
+          <h2 class="font-serif">Join the <span class="italic">Connoisseur Club</span></h2>
+          <p style="max-width: 500px; margin: var(--space-xs) auto 0; color: var(--color-text-muted);">Subscribe to receive early-access tasting invitations, seasonal updates, and curated multi-cuisine recipes directly from the chef.</p>
+          
+          <form class="loyalty-form" id="loyalty-form">
+            <label for="loyalty-email" class="sr-only">Email Address</label>
+            <input type="email" id="loyalty-email" class="loyalty-input" placeholder="Enter your email address" required>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </form>
+          <div id="loyalty-success" style="display: none; color: var(--color-accent); font-weight: 600; margin-top: var(--space-xs);">
+            Thank you! Welcome to the Connoisseur Club.
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="grid grid-4 footer-grid">
+        
+        <div class="footer-col">
+          <a href="#" class="logo" style="color: var(--color-bg); font-size: 1.75rem;">
+            GURAMRIT<span>.</span>
+          </a>
+          <p style="color: rgba(250, 248, 245, 0.6); font-size: 0.8125rem; margin-top: var(--space-2xs);">A premium multi-cuisine dining &amp; specialty cafe sanctuary. Discover wood-fired heritage in cool luxury.</p>
+        </div>
+
+        <div class="footer-col">
+          <span class="footer-col-title">Explore</span>
+          <ul class="footer-links">
+            <li><a href="#about">The Sanctuary</a></li>
+            <li><a href="#menu">Our Menu</a></li>
+            <li><a href="#booking">Book Table</a></li>
+            <li><a href="#ambience">Ambience</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <span class="footer-col-title">Connect</span>
+          <ul class="footer-links">
+            <li><a href="#contact">Contact Us</a></li>
+            <li><a href="tel:+91-860-221-7770">Call Support</a></li>
+            <li><a href="https://instagram.com/guramrit.fnb" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <span class="footer-col-title">Follow Us</span>
+          <div class="footer-socials">
+            <a href="https://instagram.com/guramrit.fnb" target="_blank" rel="noopener noreferrer" aria-label="Instagram">IG</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Guramrit Resto &amp; Cafe. All rights reserved.</p>
+        <p style="font-size: 0.75rem;"><a href="/admin" target="_blank" rel="noopener noreferrer" style="color: rgba(250, 248, 245, 0.4); text-decoration: underline;">Owner Portal</a> | Designed for premium all-weather comfort.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Sticky Bottom Booking Bar (Mobile Only) -->
+  <div class="sticky-mobile-bar">
+    <a href="#booking" class="btn btn-primary" style="width: 100%;">Book a Table</a>
+  </div>
+
+  <!-- Lightbox DOM Element Container -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Image Zoom Dialog">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close Lightbox">✕</button>
+    <button class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Previous Image">◀</button>
+    <div class="lightbox-content">
+      <img src="" alt="" class="lightbox-img" id="lightbox-img">
+    </div>
+    <button class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Next Image">▶</button>
+  </div>
+
+  <!-- Sticky Floating Combo Offers CTA -->
+  <button id="sticky-offers-cta" class="sticky-offers-cta" aria-label="View Combo Offers">View Combo Offers 🔥</button>
+
+  <!-- Dine-In Floating Cart Button -->
+
+  <!-- Dine-In Ordering Modal -->
+  <div id="dine-in-modal" class="dine-modal-overlay" role="dialog" aria-modal="true" aria-label="Dine-In Table Order Wizard" style="display: none;">
+    <div class="dine-modal-container">
+      <div class="dine-modal-header">
+        <h2 class="font-serif">🍽️ Dine-In Order</h2>
+        <button id="dine-modal-close" class="dine-modal-close-btn" aria-label="Close Order Wizard">✕</button>
+      </div>
+
+      <!-- Stepper Progress Header -->
+      <div class="dine-wizard-steps" id="dine-wizard-steps-header">
+        <div class="wizard-step active" data-step="1">
+          <span class="step-num">1</span>
+          <span class="step-label">Seating</span>
+        </div>
+        <div class="wizard-step" data-step="2">
+          <span class="step-num">2</span>
+          <span class="step-label">Dishes</span>
+        </div>
+        <div class="wizard-step" data-step="3">
+          <span class="step-num">3</span>
+          <span class="step-label">Details</span>
+        </div>
+        <div class="wizard-step" data-step="4">
+          <span class="step-num">4</span>
+          <span class="step-label">Review</span>
+        </div>
+      </div>
+
+      <!-- Step Content Area -->
+      <div class="dine-modal-body">
+        
+        <!-- STEP 1: Seating Info -->
+        <div class="dine-step-pane active" id="dine-step-1">
+          <div class="step-instruction">
+            <h3>Choose your Table & Guests</h3>
+            <p>Please select your table number and number of diners at the table.</p>
+          </div>
+          <div class="dine-form-grid">
+            <div class="dine-input-group">
+              <label for="dine-table-select">Table Number</label>
+              <select id="dine-table-select" class="dine-select">
+                <!-- Populated dynamically via JS (Table 1 to 20) -->
+              </select>
+            </div>
+            <div class="dine-input-group">
+              <label for="dine-guests-select">Number of Guests</label>
+              <select id="dine-guests-select" class="dine-select">
+                <!-- Populated dynamically via JS (1 to 10 Guests) -->
+              </select>
+            </div>
+          </div>
+          <div class="dine-step-actions">
+            <div></div> <!-- placeholder -->
+            <button class="btn btn-dine-primary" id="dine-btn-goto-step2">Next: Choose Dishes →</button>
+          </div>
+        </div>
+
+        <!-- STEP 2: Menu Selection -->
+        <div class="dine-step-pane" id="dine-step-2">
+          <div class="dine-menu-wizard-layout">
+            <!-- Left: Menu Browser -->
+            <div class="dine-menu-browser">
+              <div class="dine-search-filter-row">
+                <input type="text" id="dine-menu-search" class="dine-search-input" placeholder="🔍 Search dishes...">
+                <div class="dine-menu-cats" id="dine-menu-categories">
+                  <!-- Populated dynamically via JS -->
+                </div>
+              </div>
+              <div class="dine-menu-items-grid" id="dine-menu-items-container">
+                <!-- Populated dynamically via JS -->
+              </div>
+            </div>
+
+            <!-- Right: Current Order Sidebar -->
+            <div class="dine-menu-sidebar">
+              <h3 class="font-serif">Current Order</h3>
+              <div class="dine-sidebar-items" id="dine-sidebar-items-list">
+                <div class="dine-empty-cart">No items added yet. Click "Add to Order" to begin!</div>
+              </div>
+              <div class="dine-sidebar-summary">
+                <div class="dine-summary-line">
+                  <span>Total Amount:</span>
+                  <span id="dine-sidebar-total" class="dine-total-val">₹0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="dine-step-actions">
+            <button class="btn btn-dine-secondary" id="dine-btn-back-to-step1">← Seating</button>
+            <button class="btn btn-dine-primary" id="dine-btn-goto-step3">Next: Customer Details →</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: Customer Details -->
+        <div class="dine-step-pane" id="dine-step-3">
+          <div class="step-instruction">
+            <h3>Enter Customer Information</h3>
+            <p>Please enter your contact details. The email is required to send real-time order status updates.</p>
+          </div>
+          <div class="dine-form-grid-vertical">
+            <div class="dine-input-group">
+              <label for="dine-cust-name">Full Name</label>
+              <input type="text" id="dine-cust-name" class="dine-input" placeholder="e.g. Rahul Sharma" required>
+            </div>
+            <div class="dine-input-group">
+              <label for="dine-cust-email">Email Address <span style="color: var(--color-dine-accent);">*</span></label>
+              <input type="email" id="dine-cust-email" class="dine-input" placeholder="e.g. name@example.com" required>
+            </div>
+            <div class="dine-input-group">
+              <label for="dine-cust-phone">Phone Number (Optional)</label>
+              <input type="tel" id="dine-cust-phone" class="dine-input" placeholder="e.g. +91 98765 43210">
+            </div>
+          </div>
+          <div class="dine-step-actions">
+            <button class="btn btn-dine-secondary" id="dine-btn-back-to-step2">← Choose Dishes</button>
+            <button class="btn btn-dine-primary" id="dine-btn-goto-step4">Next: Review Order →</button>
+          </div>
+        </div>
+
+        <!-- STEP 4: Order Review & Confirmation -->
+        <div class="dine-step-pane" id="dine-step-4">
+          <div class="step-instruction">
+            <h3>Review Your Dine-In Order</h3>
+            <p>Please double-check your table, seating info, and items before placing the order.</p>
+          </div>
+          
+          <div class="dine-review-summary-box">
+            <div class="dine-review-metadata">
+              <div>
+                <strong>Table Number:</strong> <span id="dine-review-table">Table X</span>
+              </div>
+              <div>
+                <strong>Diners / Guests:</strong> <span id="dine-review-guests">X Guests</span>
+              </div>
+              <div>
+                <strong>Name:</strong> <span id="dine-review-name">Customer Name</span>
+              </div>
+              <div>
+                <strong>Email:</strong> <span id="dine-review-email">customer@email.com</span>
+              </div>
+            </div>
+
+            <div class="dine-review-items-container">
+              <table class="dine-review-table-list">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th style="text-align: center;">Qty</th>
+                    <th style="text-align: right;">Total</th>
+                  </tr>
+                </thead>
+                <tbody id="dine-review-items-tbody">
+                  <!-- Populated dynamically via JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <div class="dine-review-total-row">
+              <span>Total Amount:</span>
+              <span id="dine-review-grand-total">₹0</span>
+            </div>
+          </div>
+
+          <div class="dine-step-actions">
+            <button class="btn btn-dine-secondary" id="dine-btn-back-to-step3">← Contact Details</button>
+            <button class="btn btn-dine-primary" id="dine-btn-submit-order" style="min-width: 200px;">Place Dine-In Order 🍽️</button>
+          </div>
+        </div>
+
+        <!-- LIVE ORDER STATUS TRACKER -->
+        <div class="dine-step-pane" id="dine-step-tracker-pane">
+          <div class="step-instruction text-center">
+            <div class="dine-tracker-icon">🍳</div>
+            <h3 class="font-serif">Your Order is Placed!</h3>
+            <p>Order ID: <span id="dine-tracker-order-id" style="font-weight: 700; color: var(--color-dine-primary);">ORD-XXXX</span></p>
+            <p>We've sent a confirmation email to <span id="dine-tracker-email-sent" style="font-weight: 600;">your email</span>. Keep this tab open to track your order live!</p>
+            <div id="dine-tracker-email-preview-container" style="display: none; margin-top: 15px; padding: 10px; background: rgba(197, 160, 89, 0.15); border: 1px dashed var(--color-dine-accent); border-radius: 6px; font-size: 0.85rem; text-align: center;">
+              📧 <strong>Ethereal Test Email:</strong> <a id="dine-tracker-email-preview-link" href="#" target="_blank" style="color: var(--color-dine-accent); font-weight: 700; text-decoration: underline;">Click here to view simulated inbox</a>
+            </div>
+          </div>
+
+          <!-- Stepper Visualizer -->
+          <div class="status-stepper-container" aria-live="polite">
+            <div class="status-step active" id="step-state-placed">
+              <div class="status-indicator">
+                <span class="status-icon">✓</span>
+              </div>
+              <div class="status-step-content">
+                <strong>Placed</strong>
+                <span>Order received in kitchen</span>
+              </div>
+            </div>
+            <div class="status-step" id="step-state-preparing">
+              <div class="status-indicator">
+                <span class="status-icon">👨‍🍳</span>
+              </div>
+              <div class="status-step-content">
+                <strong>Preparing</strong>
+                <span>Chef is cooking your meal</span>
+              </div>
+            </div>
+            <div class="status-step" id="step-state-ready">
+              <div class="status-indicator">
+                <span class="status-icon">🍽️</span>
+              </div>
+              <div class="status-step-content">
+                <strong>Ready</strong>
+                <span>Dish is ready to serve</span>
+              </div>
+            </div>
+            <div class="status-step" id="step-state-served">
+              <div class="status-indicator">
+                <span class="status-icon">✓</span>
+              </div>
+              <div class="status-step-content">
+                <strong>Served</strong>
+                <span>Served at your table</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="dine-step-actions" style="margin-top: var(--space-lg); justify-content: center;">
+            <button class="btn btn-dine-primary" id="dine-btn-tracker-close">Close &amp; Exit</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- Main JavaScript File -->
+</body>
+</html>
