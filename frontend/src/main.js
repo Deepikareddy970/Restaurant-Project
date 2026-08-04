@@ -1175,12 +1175,23 @@ function initDineInFlow() {
 
   if (guestsSelect) {
     guestsSelect.innerHTML = "";
-    for (let i = 1; i <= 10; i++) {
-      const opt = document.createElement("option");
-      opt.value = i;
-      opt.textContent = `${i} ${i === 1 ? 'Guest' : 'Guests'}`;
-      guestsSelect.appendChild(opt);
+    const guestOptions = [];
+    for (let i = 1; i <= 20; i++) {
+      guestOptions.push(i);
     }
+    for (let i = 25; i <= 50; i += 5) {
+      guestOptions.push(i);
+    }
+    for (let i = 60; i <= 100; i += 10) {
+      guestOptions.push(i);
+    }
+    
+    guestOptions.forEach(num => {
+      const opt = document.createElement("option");
+      opt.value = num;
+      opt.textContent = num === 100 ? "100+ Guests" : `${num} ${num === 1 ? 'Guest' : 'Guests'}`;
+      guestsSelect.appendChild(opt);
+    });
   }
 
   // Open modal triggers
