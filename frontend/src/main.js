@@ -1653,7 +1653,7 @@ function initDineInFlow() {
     if (reviewGrandTotal) reviewGrandTotal.textContent = `₹${grandTotal}`;
   }
 
-  // --- LIVE TRACKING CONTROLLER ---
+  // --- CONFIRMATION MODAL CONTROLLER ---
   function startTrackingOrder(orderId, email) {
     // Hide progress bar headers and step panes
     stepsHeader.style.display = "none";
@@ -1664,128 +1664,33 @@ function initDineInFlow() {
     paneTracker.style.display = "flex";
 
     if (trackerOrderId) trackerOrderId.textContent = orderId;
-    if (trackerEmailSent) trackerEmailSent.textContent = email;
 
     // Reset button states
     btnSubmitOrder.disabled = false;
     btnSubmitOrder.textContent = "Place Dine-In Order 🍽️";
-
-    // Setup visual stepper defaults
-    updateStepperVisuals("pending");
-
-    // Clean previous intervals
-    if (pollingInterval) clearInterval(pollingInterval);
-
-    // Initial poll immediately
-    pollOrderStatus(orderId);
-
-    // Start 5 second interval polling
-    pollingInterval = setInterval(() => {
-      pollOrderStatus(orderId);
-    }, 5000);
   }
 
-  async function pollOrderStatus(orderId) {
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/orders/${orderId}`);
-      if (!response.ok) throw new Error("Failed to load status");
-
-      const data = await response.json();
-      const status = data.status || "pending";
-
-      updateStepperVisuals(status);
-
-      // Handle email preview link if available (Ethereal test mail fallback)
-      const previewContainer = document.getElementById("dine-tracker-email-preview-container");
-      const previewLink = document.getElementById("dine-tracker-email-preview-link");
-      if (previewContainer && previewLink) {
-        if (data.emailPreviewUrl) {
-          previewLink.href = data.emailPreviewUrl;
-          previewContainer.style.display = "block";
-        } else {
-          previewContainer.style.display = "none";
-        }
-      }
-
-      // Announce status change if there is a state transition
-      if (status !== lastAnnouncedStatus) {
-        announceStatusChange(status);
-        lastAnnouncedStatus = status;
-
-        // If status completed/served, update local storage state (do not block client visibility, but close active state)
-        if (status === "completed" || status === "served") {
-          // Keep active status shown, but let them exit manually
-        }
-      }
-    } catch (err) {
-      console.warn("Polling order status failed:", err.message);
-    }
-  }
-
-  function updateStepperVisuals(status) {
-    const stepPlaced = document.getElementById("step-state-placed");
-    const stepPreparing = document.getElementById("step-state-preparing");
-    const stepReady = document.getElementById("step-state-ready");
-    const stepServed = document.getElementById("step-state-served");
-
-    if (!stepPlaced || !stepPreparing || !stepReady || !stepServed) return;
-
-    // Clear all classes
-    [stepPlaced, stepPreparing, stepReady, stepServed].forEach(el => el.classList.remove("active"));
-
-    // Map stages to active progress
-    if (status === "pending") {
-      stepPlaced.classList.add("active");
-    } else if (status === "cooking") {
-      stepPlaced.classList.add("active");
-      stepPreparing.classList.add("active");
-    } else if (status === "ready") {
-      stepPlaced.classList.add("active");
-      stepPreparing.classList.add("active");
-      stepReady.classList.add("active");
-    } else if (status === "served" || status === "completed") {
-      stepPlaced.classList.add("active");
-      stepPreparing.classList.add("active");
-      stepReady.classList.add("active");
-      stepServed.classList.add("active");
-    }
-  }
-
-  function announceStatusChange(status) {
-    let statusText = "Order Received";
-    if (status === "cooking") statusText = "Chef is Preparing your meal";
-    if (status === "ready") statusText = "Order is Ready and is being served";
-    if (status === "served" || status === "completed") statusText = "Order has been Served";
-
-    // Dynamic screen reader notification
-    const announceEl = document.createElement("div");
-    announceEl.setAttribute("aria-live", "assertive");
-    announceEl.style.position = "absolute";
-    announceEl.style.width = "1px";
-    announceEl.style.height = "1px";
-    announceEl.style.overflow = "hidden";
-    announceEl.textContent = `Order update: ${statusText}`;
-
-    document.body.appendChild(announceEl);
-    setTimeout(() => announceEl.remove(), 3000);
-  }
-
-  // Handle exiting live tracking
+  // Handle exiting order confirmation
   if (trackerCloseBtn) {
     trackerCloseBtn.addEventListener("click", () => {
-      if (pollingInterval) clearInterval(pollingInterval);
       localStorage.removeItem("activeDineInOrder");
+      dineInCart = [];
+      if (custNameInput) custNameInput.value = "";
+      if (custEmailInput) custEmailInput.value = "";
+      if (custPhoneInput) custPhoneInput.value = "";
+      renderDineDishes();
+      renderDineSidebar();
       closeDineInFlow();
     });
   }
 
-  // Auto load active tracking order on page load (if window has active order)
+  // Auto load active confirmation on page load (if window has active order)
   const autoCheckSavedOrder = localStorage.getItem("activeDineInOrder");
   if (autoCheckSavedOrder) {
     try {
       const parsed = JSON.parse(autoCheckSavedOrder);
       if (parsed && parsed.orderId) {
-        console.log(`[DineIn] Resuming active order tracking: ${parsed.orderId}`);
+        console.log(`[DineIn] Resuming active order confirmation: ${parsed.orderId}`);
         startTrackingOrder(parsed.orderId, parsed.email);
       }
     } catch (_) { }
