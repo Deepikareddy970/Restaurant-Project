@@ -1144,6 +1144,24 @@ function initDineInFlow() {
 
   if (!modal) return;
 
+  // Real-time phone number sanitization (only allow digits, max 10 characters)
+  if (custPhoneInput) {
+    custPhoneInput.setAttribute("maxlength", "10");
+    custPhoneInput.setAttribute("inputmode", "numeric");
+    custPhoneInput.addEventListener("input", (e) => {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    });
+  }
+
+  const bookPhoneInput = document.getElementById("book-phone");
+  if (bookPhoneInput) {
+    bookPhoneInput.setAttribute("maxlength", "10");
+    bookPhoneInput.setAttribute("inputmode", "numeric");
+    bookPhoneInput.addEventListener("input", (e) => {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    });
+  }
+
   // Initialize table & guest counts
   if (tableSelect) {
     tableSelect.innerHTML = "";
@@ -1340,6 +1358,13 @@ function initDineInFlow() {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!email || !emailRegex.test(email)) {
         alert("Please enter a valid email address to receive order updates.");
+        return;
+      }
+
+      // Check phone format if entered (Optional field)
+      const phone = custPhoneInput ? custPhoneInput.value.trim() : "";
+      if (phone && !/^\d{10}$/.test(phone)) {
+        alert("Please enter a valid 10-digit phone number.");
         return;
       }
 
