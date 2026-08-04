@@ -1175,16 +1175,7 @@ function initDineInFlow() {
 
   if (guestsSelect) {
     guestsSelect.innerHTML = "";
-    const guestOptions = [];
-    for (let i = 1; i <= 20; i++) {
-      guestOptions.push(i);
-    }
-    for (let i = 25; i <= 50; i += 5) {
-      guestOptions.push(i);
-    }
-    for (let i = 60; i <= 100; i += 10) {
-      guestOptions.push(i);
-    }
+    const guestOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 40, 50, 75, 100];
     
     guestOptions.forEach(num => {
       const opt = document.createElement("option");
