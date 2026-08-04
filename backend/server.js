@@ -206,9 +206,29 @@ async function seedMenuIfNeeded() {
   }
 }
 
+// Drop legacy unique index orderNumber_1 if it exists
+async function dropLegacyIndexes() {
+  try {
+    const db = mongoose.connection.db;
+    const collections = await db.listCollections().toArray();
+    const hasOrders = collections.some(col => col.name === 'orders');
+    if (hasOrders) {
+      const indexes = await db.collection('orders').indexes();
+      const hasOrderNumberIndex = indexes.some(idx => idx.name === 'orderNumber_1');
+      if (hasOrderNumberIndex) {
+        await db.collection('orders').dropIndex('orderNumber_1');
+        console.log('[DB] Dropped legacy unique index: orderNumber_1');
+      }
+    }
+  } catch (err) {
+    console.warn('[DB] Non-critical warning dropping legacy index:', err.message);
+  }
+}
+
 // Seed on connection
 mongoose.connection.once('open', () => {
   seedMenuIfNeeded();
+  dropLegacyIndexes();
 });
 
 // ----------------------------------------------------
