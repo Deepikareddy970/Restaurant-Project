@@ -1518,7 +1518,7 @@ function initDineInFlow() {
       return;
     }
 
-    dishes.forEach(dish => {
+    function createDishCard(dish) {
       const card = document.createElement("div");
       card.className = "dine-dish-card";
 
@@ -1560,8 +1560,38 @@ function initDineInFlow() {
         minusBtn.addEventListener("click", () => updateDineCartQty(dish.id, -1));
       }
 
-      itemsContainer.appendChild(card);
-    });
+      return card;
+    }
+
+    const vegDishes = dishes.filter(d => d.type === "veg");
+    const nonVegDishes = dishes.filter(d => d.type !== "veg");
+
+    // Render Vegetarian section
+    if (vegDishes.length > 0) {
+      const vegHeader = document.createElement("div");
+      vegHeader.className = "dine-menu-section-header";
+      vegHeader.style.cssText = "grid-column: 1 / -1; margin-top: 10px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 2px solid rgba(56, 142, 60, 0.25); color: #2e7d32; font-family: var(--font-serif); font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; gap: 8px;";
+      vegHeader.innerHTML = `<span>🟢</span> Vegetarian Specialties`;
+      itemsContainer.appendChild(vegHeader);
+
+      vegDishes.forEach(dish => {
+        itemsContainer.appendChild(createDishCard(dish));
+      });
+    }
+
+    // Render Non-Vegetarian section
+    if (nonVegDishes.length > 0) {
+      const nonVegHeader = document.createElement("div");
+      nonVegHeader.className = "dine-menu-section-header";
+      const topMargin = vegDishes.length > 0 ? "24px" : "10px";
+      nonVegHeader.style.cssText = `grid-column: 1 / -1; margin-top: ${topMargin}; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 2px solid rgba(211, 47, 47, 0.25); color: #c62828; font-family: var(--font-serif); font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; gap: 8px;`;
+      nonVegHeader.innerHTML = `<span>🔴</span> Non-Vegetarian Specialties`;
+      itemsContainer.appendChild(nonVegHeader);
+
+      nonVegDishes.forEach(dish => {
+        itemsContainer.appendChild(createDishCard(dish));
+      });
+    }
   }
 
   // --- CART MANIPULATION ---

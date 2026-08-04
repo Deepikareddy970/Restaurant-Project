@@ -28,6 +28,18 @@
   transform: translateY(-2px);
 }
 
+.btn-accent-sec {
+  background-color: var(--color-accent-sec);
+  color: var(--color-bg);
+  border: 1px solid var(--color-accent-sec);
+}
+
+.btn-accent-sec:hover {
+  background-color: hsla(var(--color-accent-sec-raw), 0.9);
+  border-color: hsla(var(--color-accent-sec-raw), 0.9);
+  transform: translateY(-2px);
+}
+
 .btn-secondary {
   border: 2px solid var(--color-accent);
   color: var(--color-accent);
