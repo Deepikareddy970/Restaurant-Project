@@ -374,7 +374,7 @@ app.post('/api/bookings',
       return true;
     }),
     body('time').notEmpty().withMessage('Preferred time is required.').escape(),
-    body('partySize').isInt({ min: 1, max: 50 }).withMessage('Party size must be a number between 1 and 50.'),
+    body('partySize').isInt({ min: 1, max: 150 }).withMessage('Party size must be a number between 1 and 150.'),
     body('occasion').trim().notEmpty().withMessage('Occasion is required.').escape(),
     body('seating').trim().notEmpty().withMessage('Seating preference is required.').escape(),
     body('notes').optional().trim().escape()
