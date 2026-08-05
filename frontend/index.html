@@ -319,35 +319,44 @@
           <p style="max-width: 600px; margin: var(--space-xs) auto 0;">Savor the essence of tradition with our extensive list of signature dishes. Filter by cuisine or search directly.</p>
         </div>
 
-        <!-- Menu Search and Diet Filters -->
-        <div class="menu-controls reveal">
-          <div class="search-box">
+        <!-- Menu Search Controls -->
+        <div class="menu-controls reveal" style="justify-content: center; margin-bottom: var(--space-md);">
+          <div class="search-box" style="max-width: 500px; width: 100%;">
             <span class="search-icon">🔍</span>
             <input type="text" id="menu-search" placeholder="Search for your favorite dish...">
           </div>
-          <div class="diet-filters">
-            <button class="diet-filter-btn active" data-diet="all">All Dishes</button>
-            <button class="diet-filter-btn" data-diet="veg">
-              <span class="dot dot-veg"></span> Veg
-            </button>
-            <button class="diet-filter-btn" data-diet="non-veg">
-              <span class="dot dot-nonveg"></span> Non-Veg
-            </button>
-            <button class="diet-filter-btn" data-diet="seafood">
-              <span class="dot dot-seafood"></span> Seafood
-            </button>
-          </div>
         </div>
 
-        <!-- Menu Tabs -->
-        <div class="menu-tabs reveal">
-          <button class="menu-tab-btn active" data-category="Indian Tandoor">Indian Tandoor</button>
-          <button class="menu-tab-btn" data-category="Indian Curries">Indian Curries</button>
-          <button class="menu-tab-btn" data-category="Chinese">Chinese</button>
-          <button class="menu-tab-btn" data-category="Soups & Sea Food">Soups &amp; Sea Food</button>
-          <button class="menu-tab-btn" data-category="Rice & Biryani">Rice &amp; Biryani</button>
-          <button class="menu-tab-btn" data-category="Breads">Breads</button>
-          <button class="menu-tab-btn" data-category="Salads & Beverages">Salads &amp; Beverages</button>
+        <!-- Meal-Time Selector Row -->
+        <div class="meal-time-selector reveal">
+          <button class="meal-card" data-meal="Breakfast" aria-pressed="false">
+            <span class="meal-icon">🌅</span>
+            <span class="meal-label">Breakfast</span>
+          </button>
+          <button class="meal-card active" data-meal="Lunch" aria-pressed="true">
+            <span class="meal-icon">☀️</span>
+            <span class="meal-label">Lunch</span>
+          </button>
+          <button class="meal-card" data-meal="Dinner" aria-pressed="false">
+            <span class="meal-icon">🌙</span>
+            <span class="meal-label">Dinner</span>
+          </button>
+          <button class="meal-card" data-meal="Snacks" aria-pressed="false">
+            <span class="meal-icon">🍟</span>
+            <span class="meal-label">Snacks / Tea Time</span>
+          </button>
+        </div>
+
+        <!-- Veg/Non-Veg Toggle Row -->
+        <div class="meal-toggle-container reveal">
+          <div class="veg-nonveg-toggle">
+            <button class="veg-nonveg-toggle-btn active" data-diet="Veg">
+              <span class="dot dot-veg"></span> Veg
+            </button>
+            <button class="veg-nonveg-toggle-btn" data-diet="Non-Veg">
+              <span class="dot dot-nonveg"></span> Non-Veg
+            </button>
+          </div>
         </div>
 
         <!-- Menu Items Grid -->
@@ -860,10 +869,39 @@
           <div class="dine-menu-wizard-layout">
             <!-- Left: Menu Browser -->
             <div class="dine-menu-browser">
-              <div class="dine-search-filter-row">
+              <div class="dine-search-filter-row" style="display: flex; flex-direction: column; gap: var(--space-xs); align-items: stretch;">
                 <input type="text" id="dine-menu-search" class="dine-search-input" placeholder="🔍 Search dishes...">
-                <div class="dine-menu-cats" id="dine-menu-categories">
-                  <!-- Populated dynamically via JS -->
+                
+                <!-- Dine-In Meal-Time Selector Row -->
+                <div class="meal-time-selector" id="dine-meal-time-selector" style="margin-bottom: 8px;">
+                  <button class="meal-card" data-dine-meal="Breakfast" aria-pressed="false">
+                    <span class="meal-icon">🌅</span>
+                    <span class="meal-label">Breakfast</span>
+                  </button>
+                  <button class="meal-card active" data-dine-meal="Lunch" aria-pressed="true">
+                    <span class="meal-icon">☀️</span>
+                    <span class="meal-label">Lunch</span>
+                  </button>
+                  <button class="meal-card" data-dine-meal="Dinner" aria-pressed="false">
+                    <span class="meal-icon">🌙</span>
+                    <span class="meal-label">Dinner</span>
+                  </button>
+                  <button class="meal-card" data-dine-meal="Snacks" aria-pressed="false">
+                    <span class="meal-icon">🍟</span>
+                    <span class="meal-label">Snacks / Tea Time</span>
+                  </button>
+                </div>
+
+                <!-- Dine-In Veg/Non-Veg Toggle Row -->
+                <div class="meal-toggle-container" style="margin-bottom: 8px;">
+                  <div class="veg-nonveg-toggle">
+                    <button class="veg-nonveg-toggle-btn active" data-dine-diet="Veg">
+                      <span class="dot dot-veg"></span> Veg
+                    </button>
+                    <button class="veg-nonveg-toggle-btn" data-dine-diet="Non-Veg">
+                      <span class="dot dot-nonveg"></span> Non-Veg
+                    </button>
+                  </div>
                 </div>
               </div>
               <div class="dine-menu-items-grid" id="dine-menu-items-container">

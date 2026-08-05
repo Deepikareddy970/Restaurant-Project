@@ -151,14 +151,18 @@ const menuPath = path.join(__dirname, 'data', 'menu.json');
 async function seedMenuIfNeeded() {
   try {
     const count = await MenuItem.countDocuments();
-    if (count === 0) {
-      console.log("Menu collection in MongoDB is empty. Seeding from local data...");
+    const hasBreakfast = await MenuItem.exists({ category: "Breakfast" });
+    
+    if (count === 0 || !hasBreakfast) {
+      console.log("Menu seeding check: Seeding missing categories or initializing from local data...");
       if (fs.existsSync(menuPath)) {
         const data = fs.readFileSync(menuPath, 'utf-8');
         const rawMenuObject = JSON.parse(data);
         
         const flatItems = [];
         const CATEGORY_MAP = {
+          "Breakfast": { category: "Breakfast", subCategory: "Breakfast" },
+          "Snacks": { category: "Snacks", subCategory: "Snacks" },
           "Veg Starter": { category: "Indian Tandoor", subCategory: "Veg Starters" },
           "Non-Veg Starter": { category: "Indian Tandoor", subCategory: "Non-Veg Starters" },
           "Veg Main Course": { category: "Indian Curries", subCategory: "Veg Main Course" },
@@ -175,31 +179,60 @@ async function seedMenuIfNeeded() {
           "Beverages": { category: "Salads & Beverages", subCategory: "Beverages" }
         };
 
+        const existingNames = await MenuItem.distinct('name');
+        const existingNamesSet = new Set(existingNames);
+
         Object.entries(rawMenuObject).forEach(([rawKey, itemsList]) => {
           const mapping = CATEGORY_MAP[rawKey] || { category: "Others", subCategory: rawKey };
           if (Array.isArray(itemsList)) {
             itemsList.forEach(item => {
-              flatItems.push({
-                id: item.id || Math.random().toString(36).substr(2, 9),
-                name: item.name,
-                price: item.price,
-                type: item.type,
-                description: item.description || '',
-                image: item.image || '',
-                category: mapping.category,
-                subCategory: mapping.subCategory
-              });
+              if (!existingNamesSet.has(item.name)) {
+                flatItems.push({
+                  id: item.id || Math.random().toString(36).substr(2, 9),
+                  name: item.name,
+                  price: item.price,
+                  type: item.type,
+                  description: item.description || '',
+                  image: item.image || '',
+                  category: mapping.category,
+                  subCategory: mapping.subCategory
+                });
+              }
+            });
+          } else if (itemsList && typeof itemsList === 'object') {
+            Object.entries(itemsList).forEach(([subGroup, subGroupList]) => {
+              if (Array.isArray(subGroupList)) {
+                const itemType = subGroup.toLowerCase() === 'veg' ? 'veg' : 'non-veg';
+                subGroupList.forEach(item => {
+                  if (!existingNamesSet.has(item.name)) {
+                    flatItems.push({
+                      id: item.id || Math.random().toString(36).substr(2, 9),
+                      name: item.name,
+                      price: item.price,
+                      type: itemType,
+                      description: item.description || '',
+                      image: item.image || '',
+                      category: mapping.category,
+                      subCategory: mapping.subCategory
+                    });
+                  }
+                });
+              }
             });
           }
         });
         
-        await MenuItem.insertMany(flatItems);
-        console.log(`Successfully seeded ${flatItems.length} menu items into MongoDB!`);
+        if (flatItems.length > 0) {
+          await MenuItem.insertMany(flatItems);
+          console.log(`Successfully seeded/updated ${flatItems.length} menu items into MongoDB!`);
+        } else {
+          console.log("No new menu items to seed.");
+        }
       } else {
         console.warn("Could not seed menu: local menu.json not found at:", menuPath);
       }
     } else {
-      console.log(`Menu collection already contains ${count} items. Skipping seed.`);
+      console.log(`Menu collection already contains ${count} items. Seeding up-to-date.`);
     }
   } catch (error) {
     console.error("Error seeding menu:", error);
@@ -256,6 +289,8 @@ app.get('/api/menu', async (req, res) => {
     const items = await MenuItem.find().lean();
     
     const REVERSE_CATEGORY_MAP = {
+      "Breakfast|Breakfast": "Breakfast",
+      "Snacks|Snacks": "Snacks",
       "Indian Tandoor|Veg Starters": "Veg Starter",
       "Indian Tandoor|Non-Veg Starters": "Non-Veg Starter",
       "Indian Curries|Veg Main Course": "Veg Main Course",
@@ -276,17 +311,35 @@ app.get('/api/menu', async (req, res) => {
     items.forEach(item => {
       const key = `${item.category}|${item.subCategory}`;
       const rawKey = REVERSE_CATEGORY_MAP[key] || item.subCategory;
-      if (!rawMenuObject[rawKey]) {
-        rawMenuObject[rawKey] = [];
+      
+      if (rawKey === "Breakfast" || rawKey === "Snacks") {
+        if (!rawMenuObject[rawKey]) {
+          rawMenuObject[rawKey] = {
+            "Veg": [],
+            "Non-Veg": []
+          };
+        }
+        const grp = item.type === "veg" ? "Veg" : "Non-Veg";
+        rawMenuObject[rawKey][grp].push({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          description: item.description,
+          image: item.image
+        });
+      } else {
+        if (!rawMenuObject[rawKey]) {
+          rawMenuObject[rawKey] = [];
+        }
+        rawMenuObject[rawKey].push({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          type: item.type,
+          description: item.description,
+          image: item.image
+        });
       }
-      rawMenuObject[rawKey].push({
-        id: item.id,
-        name: item.name,
-        price: item.price,
-        type: item.type,
-        description: item.description,
-        image: item.image
-      });
     });
 
     res.json(rawMenuObject);

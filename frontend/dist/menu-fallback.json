@@ -1,4 +1,21 @@
 {
+  "Breakfast": {
+    "Veg": [
+      { "name": "Aloo Paratha with Curd & Pickle", "price": { "default": 120 }, "description": "Classic spiced potato stuffed flatbread served with fresh curd and spicy pickle." },
+      { "name": "Poha", "price": { "default": 90 }, "description": "Light and fluffy flattened rice seasoned with mustard seeds, turmeric, and peanuts." },
+      { "name": "Masala Dosa", "price": { "default": 130 }, "description": "Crispy rice crepe filled with savory spiced potato mash, served with sambhar and chutney." },
+      { "name": "Idli Sambhar (4 pcs)", "price": { "default": 100 }, "description": "Steamed soft rice cakes served with hot lentil sambhar and coconut chutney." },
+      { "name": "Chole Bhature", "price": { "default": 150 }, "description": "Spicy chickpea curry paired with deep-fried leavened sourdough bread." },
+      { "name": "Upma", "price": { "default": 90 }, "description": "Savory roasted semolina porridge cooked with mixed vegetables and aromatic spices." },
+      { "name": "Stuffed Paneer Paratha", "price": { "default": 140 }, "description": "Golden wheat flatbread stuffed with spiced grated paneer, served with curd." }
+    ],
+    "Non-Veg": [
+      { "name": "Egg Bhurji with Toast", "price": { "default": 120 }, "description": "Spiced scrambled eggs cooked with onions, tomatoes, and green chillies, served with buttered toast." },
+      { "name": "Bread Omelette", "price": { "default": 100 }, "description": "Fluffy double egg omelette wrapped around classic toasted white bread." },
+      { "name": "Chicken Sausage & Egg Plate", "price": { "default": 160 }, "description": "Grilled chicken sausages served alongside eggs prepared to your choice." },
+      { "name": "Keema Paratha", "price": { "default": 150 }, "description": "Wheat flatbread stuffed with savory spiced chicken minced meat." }
+    ]
+  },
   "Appetizer (Salads & Sides)": [
     { "name": "Garden Salad", "price": { "default": 60 }, "type": "veg", "image": null },
     { "name": "Kachumber Salad", "price": { "default": 80 }, "type": "veg", "image": null },
@@ -230,6 +247,21 @@
     { "name": "Paneer Paratha", "price": { "default": 80 }, "type": "veg", "image": null },
     { "name": "Roti Basket", "price": { "default": 250 }, "type": "veg", "image": null }
   ],
+  "Snacks": {
+    "Veg": [
+      { "name": "Paneer Pakora", "price": { "default": 150 }, "description": "Cottage cheese slices dipped in spiced chickpea batter and deep-fried to golden perfection." },
+      { "name": "Veg Spring Rolls", "price": { "default": 140 }, "description": "Crispy wrappers filled with stir-fried seasoned vegetables, served with sweet chilli sauce." },
+      { "name": "Samosa (2 pcs)", "price": { "default": 60 }, "description": "Traditional crispy pastries filled with spiced potato and green pea mixture." },
+      { "name": "Corn Cheese Balls", "price": { "default": 150 }, "description": "Golden crunchy balls stuffed with sweet corn and melting cheese." },
+      { "name": "Masala Papad", "price": { "default": 50 }, "description": "Crispy fried papad topped with chopped onions, tomatoes, coriander, and chat masala." }
+    ],
+    "Non-Veg": [
+      { "name": "Chicken 65", "price": { "default": 200 }, "description": "Spicy, deep-fried chicken cubes tempered with curry leaves and yogurt sauce." },
+      { "name": "Chicken Lollipop (6 pcs)", "price": { "default": 250 }, "description": "Succulent chicken wings shaped like lollipops, fried and tossed in hot garlic sauce." },
+      { "name": "Fish Fingers", "price": { "default": 220 }, "description": "Crispy breaded fish fillets served hot with tartar sauce." },
+      { "name": "Chicken Seekh Kebab", "price": { "default": 220 }, "description": "Skewered minced chicken blended with fresh herbs and Indian spices, grilled." }
+    ]
+  },
   "Egg Dishes": [
     { "name": "Boiled Egg (2 Pcs)", "price": { "default": 30 }, "type": "egg", "image": null },
     { "name": "Egg Bhurji", "price": { "default": 60 }, "type": "egg", "image": null },

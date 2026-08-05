@@ -18,31 +18,54 @@ const SPLASH_CONFIG = {
 
 // GLOBAL STATE FOR MENU & CART
 let MENU_DATA = [];
-let currentCategory = "Indian Tandoor";
-let currentDiet = "all";
+let selectedMealTime = sessionStorage.getItem("selectedMealTime") || "Lunch";
+let selectedDietType = sessionStorage.getItem("selectedDietType") || "Veg";
 let searchQuery = "";
+
+// Meal Time and Diet Type dynamic mapping helpers
+function getMenuItemMealTimes(item) {
+  if (item.category === "Breakfast") return ["Breakfast"];
+  if (item.category === "Snacks") return ["Snacks"];
+  return ["Lunch", "Dinner"];
+}
+
+function getMenuItemDietType(item) {
+  return (item.type && item.type.toLowerCase() === "veg") ? "Veg" : "Non-Veg";
+}
+
+function filterMenuItems(mealTime, dietType) {
+  return MENU_DATA.filter(item => {
+    const itemMealTimes = getMenuItemMealTimes(item);
+    const itemDietType = getMenuItemDietType(item);
+    return itemMealTimes.includes(mealTime) && itemDietType === dietType;
+  });
+}
 
 
 // CATEGORY HERO IMAGES FOR THE MENU TOP BANNER
 const CATEGORY_HEROES = {
+  "Breakfast": "https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?q=80&w=1200",
   "Indian Tandoor": "https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?q=80&w=1200",
   "Indian Curries": "https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=1200",
   "Chinese": "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=1200",
   "Soups & Sea Food": "https://images.unsplash.com/photo-1559737607-b3769c2d5d4a?q=80&w=1200",
   "Rice & Biryani": "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?q=80&w=1200",
   "Breads": "https://images.unsplash.com/photo-1626132647523-66f5bf380027?q=80&w=1200",
+  "Snacks": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1200",
   "Egg Dishes": "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?q=80&w=1200",
   "Salads & Beverages": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1200"
 };
 
 // CATEGORY ICONS FOR TEXT-FORWARD CARDS
 const CATEGORY_ICONS = {
+  "Breakfast": "🥞",
   "Indian Tandoor": "🔥",
   "Indian Curries": "🍛",
   "Chinese": "🥢",
   "Soups & Sea Food": "🍤",
   "Rice & Biryani": "🍚",
   "Breads": "🫓",
+  "Snacks": "🍿",
   "Egg Dishes": "🍳",
   "Salads & Beverages": "🍹"
 };
@@ -138,6 +161,8 @@ function initMobileMenu() {
 
 // Category and Subcategory mapping helper
 const CATEGORY_MAP = {
+  "Breakfast": { category: "Breakfast", subCategory: "Breakfast" },
+  "Snacks": { category: "Snacks", subCategory: "Snacks" },
   "Veg Starter": { category: "Indian Tandoor", subCategory: "Veg Starters" },
   "Non-Veg Starter": { category: "Indian Tandoor", subCategory: "Non-Veg Starters" },
   "Veg Main Course": { category: "Indian Curries", subCategory: "Veg Main Course" },
@@ -187,6 +212,22 @@ async function loadAndInitMenu() {
             subCategory: mapping.subCategory
           });
         });
+      } else if (itemsList && typeof itemsList === "object") {
+        Object.entries(itemsList).forEach(([subGroup, subGroupList]) => {
+          if (Array.isArray(subGroupList)) {
+            const itemType = subGroup.toLowerCase() === "veg" ? "veg" : "non-veg";
+            subGroupList.forEach(item => {
+              const itemId = item.id || item._id || item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+              flatItems.push({
+                ...item,
+                id: itemId,
+                type: item.type || itemType,
+                category: mapping.category,
+                subCategory: mapping.subCategory
+              });
+            });
+          }
+        });
       }
     });
     MENU_DATA = flatItems;
@@ -200,24 +241,46 @@ async function loadAndInitMenu() {
       });
     }
 
-    // Setup Diet Filter Buttons
-    const dietBtns = document.querySelectorAll(".diet-filter-btn");
-    dietBtns.forEach(btn => {
-      btn.addEventListener("click", () => {
-        dietBtns.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        currentDiet = btn.getAttribute("data-diet");
+    // Setup Meal-Time Cards UI state & Event Listeners
+    const mealCards = document.querySelectorAll(".meal-time-selector .meal-card");
+    mealCards.forEach(card => {
+      const mealVal = card.getAttribute("data-meal");
+      if (mealVal === selectedMealTime) {
+        card.classList.add("active");
+        card.setAttribute("aria-pressed", "true");
+      } else {
+        card.classList.remove("active");
+        card.setAttribute("aria-pressed", "false");
+      }
+
+      card.addEventListener("click", () => {
+        mealCards.forEach(c => {
+          c.classList.remove("active");
+          c.setAttribute("aria-pressed", "false");
+        });
+        card.classList.add("active");
+        card.setAttribute("aria-pressed", "true");
+        selectedMealTime = mealVal;
+        sessionStorage.setItem("selectedMealTime", selectedMealTime);
         renderMenu();
       });
     });
 
-    // Setup Category Tabs
-    const tabs = document.querySelectorAll(".menu-tab-btn");
-    tabs.forEach(tab => {
-      tab.addEventListener("click", () => {
-        tabs.forEach(t => t.classList.remove("active"));
-        tab.classList.add("active");
-        currentCategory = tab.getAttribute("data-category");
+    // Setup Veg/Non-Veg Toggle UI state & Event Listeners
+    const toggleBtns = document.querySelectorAll(".veg-nonveg-toggle .veg-nonveg-toggle-btn");
+    toggleBtns.forEach(btn => {
+      const dietVal = btn.getAttribute("data-diet");
+      if (dietVal === selectedDietType) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+
+      btn.addEventListener("click", () => {
+        toggleBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedDietType = dietVal;
+        sessionStorage.setItem("selectedDietType", selectedDietType);
         renderMenu();
       });
     });
@@ -241,15 +304,10 @@ function renderMenu() {
   setTimeout(() => {
     grid.innerHTML = "";
 
-    // 1. Filter by category
-    let items = MENU_DATA.filter(item => item.category === currentCategory);
+    // 1. Filter by mealTime and dietType
+    let items = filterMenuItems(selectedMealTime, selectedDietType);
 
-    // 2. Filter by diet type
-    if (currentDiet !== "all") {
-      items = items.filter(item => item.type === currentDiet);
-    }
-
-    // 3. Filter by search query
+    // 2. Filter by search query
     if (searchQuery) {
       items = items.filter(item =>
         item.name.toLowerCase().includes(searchQuery) ||
@@ -266,69 +324,37 @@ function renderMenu() {
       return;
     }
 
-    // Check if category has subgroups
-    const subCategories = [...new Set(items.map(item => item.subCategory).filter(Boolean))];
+    // Group by category if we have multiple categories
+    const categoriesPresent = [...new Set(items.map(item => item.category).filter(Boolean))];
+    const categoryOrder = [
+      "Breakfast",
+      "Indian Tandoor",
+      "Indian Curries",
+      "Chinese",
+      "Soups & Sea Food",
+      "Rice & Biryani",
+      "Breads",
+      "Snacks",
+      "Egg Dishes",
+      "Salads & Beverages"
+    ];
+    categoriesPresent.sort((a, b) => categoryOrder.indexOf(a) - categoryOrder.indexOf(b));
 
-    if (currentCategory === "Chinese" && subCategories.length > 0) {
-      // COLLAPSIBLE ACCORDION FOR CHINESE SUBGROUPS
-      subCategories.sort().forEach((subCat, index) => {
-        const subCatItems = items.filter(item => item.subCategory === subCat);
-        if (subCatItems.length === 0) return;
-
-        const accordionSec = document.createElement("div");
-        accordionSec.className = "menu-accordion-section";
-        if (index === 0) accordionSec.classList.add("active");
-
-        const headerBtn = document.createElement("button");
-        headerBtn.className = "menu-accordion-header";
-        headerBtn.innerHTML = `<span>${subCat} (${subCatItems.length})</span>`;
-
-        const contentDiv = document.createElement("div");
-        contentDiv.className = "menu-accordion-content";
-        if (index === 0) {
-          // Set initial height for open accordion
-          setTimeout(() => {
-            contentDiv.style.maxHeight = contentDiv.scrollHeight + "px";
-          }, 50);
-        }
-
-        subCatItems.forEach(item => {
-          contentDiv.appendChild(createItemCard(item));
-        });
-
-        accordionSec.appendChild(headerBtn);
-        accordionSec.appendChild(contentDiv);
-        grid.appendChild(accordionSec);
-
-        // Bind accordion click
-        headerBtn.addEventListener("click", () => {
-          const isActive = accordionSec.classList.toggle("active");
-          if (isActive) {
-            contentDiv.style.maxHeight = contentDiv.scrollHeight + "px";
-          } else {
-            contentDiv.style.maxHeight = "0px";
-          }
-        });
-      });
-
-    } else if (subCategories.length > 1) {
-      // VISUAL HEADING DIVISIONS FOR OTHER CATEGORIES (TANDOOR, CURRIES, SALADS)
-      subCategories.sort().forEach(subCat => {
-        const subCatItems = items.filter(item => item.subCategory === subCat);
-        if (subCatItems.length === 0) return;
+    if (categoriesPresent.length > 1) {
+      categoriesPresent.forEach(cat => {
+        const catItems = items.filter(item => item.category === cat);
+        if (catItems.length === 0) return;
 
         const sectionHeader = document.createElement("div");
         sectionHeader.style.cssText = "grid-column: 1 / -1; margin-top: var(--space-md); border-bottom: 2px solid var(--color-accent-sec); padding-bottom: var(--space-3xs); margin-bottom: var(--space-xs);";
-        sectionHeader.innerHTML = `<h3 style="font-family: var(--font-serif); font-size: 1.3rem; font-style: italic; color: var(--color-text);">${subCat}</h3>`;
+        sectionHeader.innerHTML = `<h3 style="font-family: var(--font-serif); font-size: 1.3rem; font-style: italic; color: var(--color-text);">${cat}</h3>`;
         grid.appendChild(sectionHeader);
 
-        subCatItems.forEach(item => {
+        catItems.forEach(item => {
           grid.appendChild(createItemCard(item));
         });
       });
-
     } else {
-      // DIRECT LISTING FOR RICE, BREADS, EGG
       items.forEach(item => {
         grid.appendChild(createItemCard(item));
       });
@@ -1123,11 +1149,54 @@ function initDineInFlow() {
   let pendingAddDish = null;
   let selectedTable = "";
   let guestCount = 1;
-  let activeDineCat = "";
+  let dineMealTime = "Lunch"; // Placeholder initialized dynamically later
+  let dineDietType = "Veg";
   let searchVal = "";
   let currentStep = 1;
   let pollingInterval = null;
   let lastAnnouncedStatus = "";
+
+  function getDefaultMealTimeByTimeOfDay() {
+    const hours = new Date().getHours();
+    const minutes = new Date().getMinutes();
+    const decimalTime = hours + minutes / 60;
+
+    if (decimalTime < 11) {
+      return "Breakfast";
+    } else if (decimalTime >= 12 && decimalTime < 15.5) {
+      return "Lunch";
+    } else if (decimalTime >= 16 && decimalTime < 18.5) {
+      return "Snacks";
+    } else {
+      return "Dinner";
+    }
+  }
+
+  function syncDineUIState() {
+    const dineMealCards = document.querySelectorAll("#dine-meal-time-selector .meal-card");
+    dineMealCards.forEach(card => {
+      const mealVal = card.getAttribute("data-dine-meal");
+      if (mealVal === dineMealTime) {
+        card.classList.add("active");
+        card.setAttribute("aria-pressed", "true");
+      } else {
+        card.classList.remove("active");
+        card.setAttribute("aria-pressed", "false");
+      }
+    });
+
+    const dineDietBtns = document.querySelectorAll(".dine-search-filter-row .veg-nonveg-toggle-btn");
+    dineDietBtns.forEach(btn => {
+      const dietVal = btn.getAttribute("data-dine-diet");
+      if (dietVal === dineDietType) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    });
+  }
+
+  dineMealTime = getDefaultMealTimeByTimeOfDay();
 
   function getDisplayPrice(priceObj) {
     if (typeof priceObj === 'number') return priceObj;
@@ -1159,6 +1228,40 @@ function initDineInFlow() {
     bookPhoneInput.setAttribute("inputmode", "numeric");
     bookPhoneInput.addEventListener("input", (e) => {
       e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    });
+  }
+
+  // Bind Dine-In meal-time cards
+  const dineMealCards = document.querySelectorAll("#dine-meal-time-selector .meal-card");
+  dineMealCards.forEach(card => {
+    card.addEventListener("click", () => {
+      dineMealCards.forEach(c => {
+        c.classList.remove("active");
+        c.setAttribute("aria-pressed", "false");
+      });
+      card.classList.add("active");
+      card.setAttribute("aria-pressed", "true");
+      dineMealTime = card.getAttribute("data-dine-meal");
+      renderDineDishes();
+    });
+  });
+
+  // Bind Dine-In Veg/Non-Veg toggle buttons
+  const dineDietBtns = document.querySelectorAll(".dine-search-filter-row .veg-nonveg-toggle-btn");
+  dineDietBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      dineDietBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      dineDietType = btn.getAttribute("data-dine-diet");
+      renderDineDishes();
+    });
+  });
+
+  // Bind Dine-In Search Input
+  if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+      searchVal = e.target.value.toLowerCase().trim();
+      renderDineDishes();
     });
   }
 
@@ -1293,26 +1396,23 @@ function initDineInFlow() {
       selectedTable = tableSelect.value;
       guestCount = parseInt(guestsSelect.value) || 1;
 
-      // Auto initialize category if not set
-      if (!activeDineCat) {
-        const cats = getMenuCategories();
-        activeDineCat = cats[0] || "Indian Tandoor";
-      }
-
-      showStep(2);
-      renderCategoryTabs();
+      // Reset to time-of-day default
+      dineMealTime = getDefaultMealTimeByTimeOfDay();
+      dineDietType = "Veg";
 
       // If there was a pending item from the homepage, add it now
       if (pendingAddDish) {
         addToDineCart(pendingAddDish);
-        // Switch to the category of the added dish so the user sees it in the browser!
-        if (pendingAddDish.category) {
-          activeDineCat = pendingAddDish.category;
-          renderCategoryTabs();
+        const itemMealTimes = getMenuItemMealTimes(pendingAddDish);
+        if (itemMealTimes && itemMealTimes.length > 0) {
+          dineMealTime = itemMealTimes[0];
         }
+        dineDietType = getMenuItemDietType(pendingAddDish);
         pendingAddDish = null;
       }
 
+      showStep(2);
+      syncDineUIState();
       renderDineDishes();
       renderDineSidebar();
     });
@@ -1340,6 +1440,7 @@ function initDineInFlow() {
   if (btnBackToStep2) {
     btnBackToStep2.addEventListener("click", () => {
       showStep(2);
+      syncDineUIState();
       renderDineDishes();
       renderDineSidebar();
     });
@@ -1467,45 +1568,11 @@ function initDineInFlow() {
     ];
   }
 
-  function renderCategoryTabs() {
-    if (!categoriesContainer) return;
-    categoriesContainer.innerHTML = "";
-
-    const categories = getMenuCategories();
-    categories.forEach(cat => {
-      const tab = document.createElement("button");
-      tab.className = `dine-cat-tab ${cat === activeDineCat ? 'active' : ''}`;
-      tab.textContent = cat;
-      tab.addEventListener("click", () => {
-        activeDineCat = cat;
-        renderCategoryTabs();
-        renderDineDishes();
-      });
-      categoriesContainer.appendChild(tab);
-    });
-  }
-
-  // Bind Search Input
-  if (searchInput) {
-    searchInput.addEventListener("input", (e) => {
-      searchVal = e.target.value.toLowerCase().trim();
-      renderDineDishes();
-    });
-  }
-
   function renderDineDishes() {
     if (!itemsContainer) return;
     itemsContainer.innerHTML = "";
 
-    // If MENU_DATA hasn't loaded yet, try to load it from the page or fallback
-    let dishes = MENU_DATA;
-    if (dishes.length === 0) {
-      itemsContainer.innerHTML = `<div style="grid-column:1/-1; text-align:center; font-size:0.9rem; color:var(--color-text-soft);">Loading dishes...</div>`;
-      return;
-    }
-
-    // Filter by active category
-    dishes = dishes.filter(d => d.category === activeDineCat);
+    let dishes = filterMenuItems(dineMealTime, dineDietType);
 
     // Filter by search query
     if (searchVal) {
@@ -1516,7 +1583,7 @@ function initDineInFlow() {
     }
 
     if (dishes.length === 0) {
-      itemsContainer.innerHTML = `<div style="grid-column:1/-1; text-align:center; font-size:0.9rem; color:var(--color-text-soft);">No dishes found in this category.</div>`;
+      itemsContainer.innerHTML = `<div style="grid-column:1/-1; text-align:center; font-size:0.9rem; color:var(--color-text-soft);">No dishes found matching your search filters.</div>`;
       return;
     }
 
@@ -1525,7 +1592,7 @@ function initDineInFlow() {
       card.className = "dine-dish-card";
 
       const cartItem = dineInCart.find(i => i.id === dish.id);
-      const isVegSymbol = dish.type === "veg" ? "🟢" : "🔴";
+      const isVegSymbol = getMenuItemDietType(dish) === "Veg" ? "🟢" : "🔴";
 
       card.innerHTML = `
         <div class="dine-dish-info">
@@ -1565,32 +1632,39 @@ function initDineInFlow() {
       return card;
     }
 
-    const vegDishes = dishes.filter(d => d.type === "veg");
-    const nonVegDishes = dishes.filter(d => d.type !== "veg");
+    // Group by category if we have multiple categories
+    const categoriesPresent = [...new Set(dishes.map(d => d.category).filter(Boolean))];
+    const categoryOrder = [
+      "Breakfast",
+      "Indian Tandoor",
+      "Indian Curries",
+      "Chinese",
+      "Soups & Sea Food",
+      "Rice & Biryani",
+      "Breads",
+      "Snacks",
+      "Egg Dishes",
+      "Salads & Beverages"
+    ];
+    categoriesPresent.sort((a, b) => categoryOrder.indexOf(a) - categoryOrder.indexOf(b));
 
-    // Render Vegetarian section
-    if (vegDishes.length > 0) {
-      const vegHeader = document.createElement("div");
-      vegHeader.className = "dine-menu-section-header";
-      vegHeader.style.cssText = "grid-column: 1 / -1; margin-top: 10px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 2px solid rgba(56, 142, 60, 0.25); color: #2e7d32; font-family: var(--font-serif); font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; gap: 8px;";
-      vegHeader.innerHTML = `<span>🟢</span> Vegetarian Specialties`;
-      itemsContainer.appendChild(vegHeader);
+    if (categoriesPresent.length > 1) {
+      categoriesPresent.forEach(cat => {
+        const catDishes = dishes.filter(d => d.category === cat);
+        if (catDishes.length === 0) return;
 
-      vegDishes.forEach(dish => {
-        itemsContainer.appendChild(createDishCard(dish));
+        const sectionHeader = document.createElement("div");
+        sectionHeader.className = "dine-menu-section-header";
+        sectionHeader.style.cssText = "grid-column: 1 / -1; margin-top: 16px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 2px solid rgba(0, 0, 0, 0.1); color: var(--color-text); font-family: var(--font-serif); font-size: 1.1rem; font-weight: 700;";
+        sectionHeader.textContent = cat;
+        itemsContainer.appendChild(sectionHeader);
+
+        catDishes.forEach(dish => {
+          itemsContainer.appendChild(createDishCard(dish));
+        });
       });
-    }
-
-    // Render Non-Vegetarian section
-    if (nonVegDishes.length > 0) {
-      const nonVegHeader = document.createElement("div");
-      nonVegHeader.className = "dine-menu-section-header";
-      const topMargin = vegDishes.length > 0 ? "24px" : "10px";
-      nonVegHeader.style.cssText = `grid-column: 1 / -1; margin-top: ${topMargin}; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 2px solid rgba(211, 47, 47, 0.25); color: #c62828; font-family: var(--font-serif); font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; gap: 8px;`;
-      nonVegHeader.innerHTML = `<span>🔴</span> Non-Vegetarian Specialties`;
-      itemsContainer.appendChild(nonVegHeader);
-
-      nonVegDishes.forEach(dish => {
+    } else {
+      dishes.forEach(dish => {
         itemsContainer.appendChild(createDishCard(dish));
       });
     }
