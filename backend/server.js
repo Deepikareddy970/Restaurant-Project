@@ -474,7 +474,7 @@ app.post('/api/orders',
     }
 
     try {
-      const { customerName, customerEmail, customerPhone, tableNumber, partySize, items, totalAmount } = req.body;
+      const { customerName, customerEmail, customerPhone, tableNumber, partySize, items, totalAmount, type } = req.body;
 
       // Generate order ID (ORD-YYYYMMDD-HEX)
       const today = new Date();
@@ -487,6 +487,7 @@ app.post('/api/orders',
         customerName,
         customerEmail,
         customerPhone,
+        type: type || 'dine-in',
         tableNumber,
         partySize: Number(partySize) || 1,
         items,

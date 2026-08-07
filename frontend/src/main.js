@@ -70,10 +70,12 @@ const CATEGORY_ICONS = {
   "Salads & Beverages": "🍹"
 };
 
-// TIME SLOTS BY SESSION (Strict adherence to Rayagada hours: 12-3 PM & 6-10 PM)
+// TIME SLOTS BY SESSION
 const TIME_SLOTS = {
+  Breakfast: ["07:00 AM", "07:30 AM", "08:00 AM", "08:30 AM", "09:00 AM", "09:30 AM"],
   Lunch: ["12:00 PM", "12:30 PM", "01:00 PM", "01:30 PM", "02:00 PM", "02:30 PM"],
-  Dinner: ["06:00 PM", "06:30 PM", "07:00 PM", "07:30 PM", "08:00 PM", "08:30 PM", "09:00 PM", "09:30 PM"]
+  "Shaam Ki Mehfil": ["05:00 PM", "05:30 PM", "06:00 PM", "06:30 PM", "07:00 PM", "07:30 PM", "08:00 PM", "08:30 PM"],
+  Dinner: ["06:30 PM", "07:00 PM", "07:30 PM", "08:00 PM", "08:30 PM", "09:00 PM", "09:30 PM"]
 };
 
 // GALLERY IMAGE URLS FOR LIGHTBOX
@@ -105,6 +107,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initFormSubmit();
   initComboOffers(); // Initialize Combo Offers & Sticky CTA
   initDineInFlow();   // Initialize step-by-step Dine-In ordering flow and tracking
+  initOrderOnlineFlow(); // Initialize Order Online takeaway/delivery flow
+  initServicesHub();
 });
 
 // 1. SCROLL EFFECTS & REVEALS
@@ -242,7 +246,7 @@ async function loadAndInitMenu() {
     }
 
     // Setup Meal-Time Cards UI state & Event Listeners
-    const mealCards = document.querySelectorAll(".meal-time-selector .meal-card");
+    const mealCards = document.querySelectorAll(".menu-preview .meal-time-selector .meal-card");
     mealCards.forEach(card => {
       const mealVal = card.getAttribute("data-meal");
       if (mealVal === selectedMealTime) {
@@ -262,12 +266,13 @@ async function loadAndInitMenu() {
         card.setAttribute("aria-pressed", "true");
         selectedMealTime = mealVal;
         sessionStorage.setItem("selectedMealTime", selectedMealTime);
+        updateMenuHeaderBranding();
         renderMenu();
       });
     });
 
     // Setup Veg/Non-Veg Toggle UI state & Event Listeners
-    const toggleBtns = document.querySelectorAll(".veg-nonveg-toggle .veg-nonveg-toggle-btn");
+    const toggleBtns = document.querySelectorAll(".menu-preview .veg-nonveg-toggle .veg-nonveg-toggle-btn");
     toggleBtns.forEach(btn => {
       const dietVal = btn.getAttribute("data-diet");
       if (dietVal === selectedDietType) {
@@ -286,11 +291,26 @@ async function loadAndInitMenu() {
     });
 
     // Initial render
+    updateMenuHeaderBranding();
     renderMenu();
 
   } catch (err) {
     console.error("Error initializing menu:", err);
     grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--color-accent);">Unable to connect to the menu server or load offline data. Please try refreshing.</div>`;
+  }
+}
+
+function updateMenuHeaderBranding() {
+  const menuTitleEl = document.querySelector(".menu-preview .text-center h2");
+  const menuDescEl = document.querySelector(".menu-preview .text-center p");
+  if (!menuTitleEl || !menuDescEl) return;
+
+  if (selectedMealTime === "Snacks") {
+    menuTitleEl.innerHTML = `Our Multi-Cuisine <span class="italic">Menu</span> <div class="shaam-mehfil-title-badge" style="font-size: 1.5rem; margin-top: 10px; color: var(--color-accent); font-family: var(--font-serif); font-style: italic;">Shaam Ki Mehfil</div>`;
+    menuDescEl.innerHTML = `<strong>Har Shaam, Kuch Khaas</strong><br><span style="font-size: 0.9rem; color: var(--color-text-soft);">Café • Chaat • Snacks ☕ (Served 5:00 PM – 9:00 PM)</span>`;
+  } else {
+    menuTitleEl.innerHTML = `Our Multi-Cuisine <span class="italic">Menu</span>`;
+    menuDescEl.textContent = `Savor the essence of tradition with our extensive list of signature dishes. Filter by cuisine or search directly.`;
   }
 }
 
@@ -318,7 +338,9 @@ function renderMenu() {
     if (items.length === 0) {
       const emptyDiv = document.createElement("div");
       emptyDiv.style.cssText = "grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--color-text-soft); font-family: var(--font-serif); font-style: italic;";
-      emptyDiv.textContent = "No dishes found matching your search filters.";
+      emptyDiv.textContent = selectedMealTime === "Snacks"
+        ? "Shaam Ki Mehfil menu launching soon — check back shortly!"
+        : "No dishes found matching your search filters.";
       grid.appendChild(emptyDiv);
       grid.style.opacity = 1;
       return;
@@ -708,8 +730,12 @@ function initBookingWizard() {
         document.getElementById("book-date").value = widgetDate;
       }
 
-      if (widgetTime.includes("12:00") || widgetTime.includes("01:30")) {
+      if (widgetTime.includes("AM")) {
+        inputSession.value = "Breakfast";
+      } else if (widgetTime.includes("12:30")) {
         inputSession.value = "Lunch";
+      } else if (widgetTime.includes("06:00")) {
+        inputSession.value = "Shaam Ki Mehfil";
       } else {
         inputSession.value = "Dinner";
       }
@@ -1163,7 +1189,7 @@ function initDineInFlow() {
 
     if (decimalTime < 11) {
       return "Breakfast";
-    } else if (decimalTime >= 12 && decimalTime < 15.5) {
+    } else if (decimalTime >= 11 && decimalTime < 16) {
       return "Lunch";
     } else if (decimalTime >= 16 && decimalTime < 18.5) {
       return "Snacks";
@@ -1325,6 +1351,7 @@ function initDineInFlow() {
   }
 
   // Modal open function
+  window.openDineInFlow = openDineInFlow;
   function openDineInFlow(pendingItem) {
     if (pendingItem) {
       pendingAddDish = pendingItem;
@@ -1570,9 +1597,11 @@ function initDineInFlow() {
 
   function renderDineDishes() {
     if (!itemsContainer) return;
+    const scrollTop = itemsContainer.scrollTop;
     itemsContainer.innerHTML = "";
 
     let dishes = filterMenuItems(dineMealTime, dineDietType);
+    console.log("renderDineDishes: dineMealTime =", dineMealTime, "dineDietType =", dineDietType, "count =", dishes.length);
 
     // Filter by search query
     if (searchVal) {
@@ -1583,7 +1612,10 @@ function initDineInFlow() {
     }
 
     if (dishes.length === 0) {
-      itemsContainer.innerHTML = `<div style="grid-column:1/-1; text-align:center; font-size:0.9rem; color:var(--color-text-soft);">No dishes found matching your search filters.</div>`;
+      const msg = dineMealTime === "Snacks"
+        ? "Shaam Ki Mehfil menu launching soon — check back shortly!"
+        : "No dishes found matching your search filters.";
+      itemsContainer.innerHTML = `<div style="grid-column:1/-1; text-align:center; font-size:0.9rem; color:var(--color-text-soft); font-style:italic;">${msg}</div>`;
       return;
     }
 
@@ -1656,7 +1688,7 @@ function initDineInFlow() {
         const sectionHeader = document.createElement("div");
         sectionHeader.className = "dine-menu-section-header";
         sectionHeader.style.cssText = "grid-column: 1 / -1; margin-top: 16px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 2px solid rgba(0, 0, 0, 0.1); color: var(--color-text); font-family: var(--font-serif); font-size: 1.1rem; font-weight: 700;";
-        sectionHeader.textContent = cat;
+        sectionHeader.textContent = cat === "Snacks" ? "Shaam Ki Mehfil (Café • Chaat • Snacks)" : cat;
         itemsContainer.appendChild(sectionHeader);
 
         catDishes.forEach(dish => {
@@ -1668,6 +1700,7 @@ function initDineInFlow() {
         itemsContainer.appendChild(createDishCard(dish));
       });
     }
+    itemsContainer.scrollTop = scrollTop;
   }
 
   // --- CART MANIPULATION ---
@@ -1802,4 +1835,816 @@ function initDineInFlow() {
     } catch (_) { }
   }
 }
+
+// 9. ORDER ONLINE TAKEAWAY/DELIVERY WIZARD CONTROLLER
+function initOrderOnlineFlow() {
+  const modal = document.getElementById("order-online-modal");
+  const closeBtn = document.getElementById("online-modal-close");
+  const stepsHeader = document.getElementById("online-wizard-steps-header");
+
+  const pane1 = document.getElementById("online-step-1");
+  const pane2 = document.getElementById("online-step-2");
+  const pane3 = document.getElementById("online-step-3");
+  const pane4 = document.getElementById("online-step-4");
+  const paneTracker = document.getElementById("online-step-tracker-pane");
+
+  const btnTypeDelivery = document.getElementById("btn-type-delivery");
+  const btnTypeTakeaway = document.getElementById("btn-type-takeaway");
+  const deliveryFields = document.getElementById("online-delivery-fields");
+  const takeawayFields = document.getElementById("online-takeaway-fields");
+
+  const addressInput = document.getElementById("online-address");
+  const landmarkInput = document.getElementById("online-landmark");
+  const pincodeInput = document.getElementById("online-pincode");
+  const pickupTimeSelect = document.getElementById("online-pickup-time");
+
+  const searchInput = document.getElementById("online-menu-search");
+  const itemsContainer = document.getElementById("online-menu-items-container");
+  const sidebarList = document.getElementById("online-sidebar-items-list");
+  const sidebarTotal = document.getElementById("online-sidebar-total");
+
+  const custNameInput = document.getElementById("online-cust-name");
+  const custEmailInput = document.getElementById("online-cust-email");
+  const custPhoneInput = document.getElementById("online-cust-phone");
+
+  const reviewType = document.getElementById("online-review-type");
+  const reviewFulfillmentRow = document.getElementById("online-review-fulfillment-row");
+  const reviewFulfillmentVal = document.getElementById("online-review-fulfillment-val");
+  const reviewName = document.getElementById("online-review-name");
+  const reviewEmail = document.getElementById("online-review-email");
+  const reviewPhone = document.getElementById("online-review-phone");
+  const reviewItemsTbody = document.getElementById("online-review-items-tbody");
+  const reviewGrandTotal = document.getElementById("online-review-grand-total");
+
+  const trackerOrderId = document.getElementById("online-tracker-order-id");
+  const trackerCloseBtn = document.getElementById("online-btn-tracker-close");
+
+  const btnGotoStep2 = document.getElementById("online-btn-goto-step2");
+  const btnBackToStep1 = document.getElementById("online-btn-back-to-step1");
+  const btnGotoStep3 = document.getElementById("online-btn-goto-step3");
+  const btnBackToStep2 = document.getElementById("online-btn-back-to-step2");
+  const btnGotoStep4 = document.getElementById("online-btn-goto-step4");
+  const btnBackToStep3 = document.getElementById("online-btn-back-to-step3");
+  const btnSubmitOrder = document.getElementById("online-btn-submit-order");
+
+  let onlineCart = [];
+  let orderType = "delivery"; // "delivery" or "takeaway"
+  let onlineMealTime = "Lunch";
+  let onlineDietType = "Veg";
+  let searchVal = "";
+  let currentStep = 1;
+
+  if (!modal) return;
+
+  function getDefaultMealTimeByTimeOfDay() {
+    const hours = new Date().getHours();
+    const minutes = new Date().getMinutes();
+    const decimalTime = hours + minutes / 60;
+
+    if (decimalTime < 11) {
+      return "Breakfast";
+    } else if (decimalTime >= 11 && decimalTime < 16) {
+      return "Lunch";
+    } else if (decimalTime >= 16 && decimalTime < 18.5) {
+      return "Snacks";
+    } else {
+      return "Dinner";
+    }
+  }
+
+  // Force digits for phone number
+  if (custPhoneInput) {
+    custPhoneInput.setAttribute("maxlength", "10");
+    custPhoneInput.setAttribute("inputmode", "numeric");
+    custPhoneInput.addEventListener("input", (e) => {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    });
+  }
+
+  // Force digits for pincode
+  if (pincodeInput) {
+    pincodeInput.setAttribute("maxlength", "6");
+    pincodeInput.setAttribute("inputmode", "numeric");
+    pincodeInput.addEventListener("input", (e) => {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    });
+  }
+
+  // Toggle order type
+  if (btnTypeDelivery && btnTypeTakeaway) {
+    btnTypeDelivery.addEventListener("click", () => {
+      btnTypeDelivery.classList.add("active");
+      btnTypeTakeaway.classList.remove("active");
+      deliveryFields.style.display = "block";
+      takeawayFields.style.display = "none";
+      orderType = "delivery";
+    });
+
+    btnTypeTakeaway.addEventListener("click", () => {
+      btnTypeTakeaway.classList.add("active");
+      btnTypeDelivery.classList.remove("active");
+      deliveryFields.style.display = "none";
+      takeawayFields.style.display = "block";
+      orderType = "takeaway";
+    });
+  }
+
+  // Bind meal cards
+  const mealCards = document.querySelectorAll("#online-meal-time-selector .meal-card");
+  mealCards.forEach(card => {
+    card.addEventListener("click", () => {
+      mealCards.forEach(c => {
+        c.classList.remove("active");
+        c.setAttribute("aria-pressed", "false");
+      });
+      card.classList.add("active");
+      card.setAttribute("aria-pressed", "true");
+      onlineMealTime = card.getAttribute("data-online-meal");
+      renderDishes();
+    });
+  });
+
+  // Bind Veg/Non-Veg toggle buttons
+  const dietBtns = document.querySelectorAll("#online-step-2 .veg-nonveg-toggle-btn");
+  dietBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      dietBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      onlineDietType = btn.getAttribute("data-online-diet");
+      renderDishes();
+    });
+  });
+
+  // Bind Search Input
+  if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+      searchVal = e.target.value.toLowerCase().trim();
+      renderDishes();
+    });
+  }
+
+  function syncUIState() {
+    const cards = document.querySelectorAll("#online-meal-time-selector .meal-card");
+    cards.forEach(card => {
+      const meal = card.getAttribute("data-online-meal");
+      if (meal === onlineMealTime) {
+        card.classList.add("active");
+        card.setAttribute("aria-pressed", "true");
+      } else {
+        card.classList.remove("active");
+        card.setAttribute("aria-pressed", "false");
+      }
+    });
+
+    const btns = document.querySelectorAll("#online-step-2 .veg-nonveg-toggle-btn");
+    btns.forEach(btn => {
+      const diet = btn.getAttribute("data-online-diet");
+      if (diet === onlineDietType) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    });
+  }
+
+  window.openOrderOnlineFlow = function() {
+    currentStep = 1;
+    onlineCart = [];
+    onlineMealTime = getDefaultMealTimeByTimeOfDay();
+    onlineDietType = "Veg";
+    searchVal = "";
+    if (searchInput) searchInput.value = "";
+    
+    if (addressInput) addressInput.value = "";
+    if (landmarkInput) landmarkInput.value = "";
+    if (pincodeInput) pincodeInput.value = "";
+
+    showStep(1);
+    modal.style.display = "flex";
+    document.body.style.overflow = "hidden";
+  };
+
+  function closeFlow() {
+    modal.style.display = "none";
+    document.body.style.overflow = "";
+  }
+
+  if (closeBtn) closeBtn.addEventListener("click", closeFlow);
+  if (trackerCloseBtn) trackerCloseBtn.addEventListener("click", closeFlow);
+
+  function showStep(stepNum) {
+    currentStep = stepNum;
+
+    pane1.style.display = "none";
+    pane2.style.display = "none";
+    pane3.style.display = "none";
+    pane4.style.display = "none";
+    paneTracker.style.display = "none";
+    stepsHeader.style.display = "flex";
+
+    if (stepNum === 1) pane1.style.display = "block";
+    if (stepNum === 2) pane2.style.display = "flex";
+    if (stepNum === 3) pane3.style.display = "block";
+    if (stepNum === 4) pane4.style.display = "flex";
+
+    document.querySelectorAll("#online-wizard-steps-header .wizard-step").forEach(stepEl => {
+      const stepIdx = parseInt(stepEl.getAttribute("data-step"));
+      stepEl.classList.remove("active", "completed");
+      if (stepIdx === stepNum) {
+        stepEl.classList.add("active");
+      } else if (stepIdx < stepNum) {
+        stepEl.classList.add("completed");
+      }
+    });
+  }
+
+  if (btnGotoStep2) {
+    btnGotoStep2.addEventListener("click", () => {
+      if (orderType === "delivery") {
+        if (!addressInput.value.trim()) {
+          alert("Please enter a delivery address.");
+          return;
+        }
+        const pin = pincodeInput.value.trim();
+        if (!pin || pin.length < 6) {
+          alert("Please enter a valid 6-digit pincode.");
+          return;
+        }
+      }
+      showStep(2);
+      syncUIState();
+      renderDishes();
+      renderSidebar();
+    });
+  }
+
+  if (btnBackToStep1) {
+    btnBackToStep1.addEventListener("click", () => {
+      showStep(1);
+    });
+  }
+
+  if (btnGotoStep3) {
+    btnGotoStep3.addEventListener("click", () => {
+      if (onlineCart.length === 0) {
+        alert("Your order is empty. Please add at least one dish.");
+        return;
+      }
+      showStep(3);
+    });
+  }
+
+  if (btnBackToStep2) {
+    btnBackToStep2.addEventListener("click", () => {
+      showStep(2);
+      syncUIState();
+      renderDishes();
+      renderSidebar();
+    });
+  }
+
+  if (btnGotoStep4) {
+    btnGotoStep4.addEventListener("click", () => {
+      const name = custNameInput.value.trim();
+      const email = custEmailInput.value.trim();
+      const phone = custPhoneInput.value.trim();
+
+      if (!name) {
+        alert("Please enter your name.");
+        return;
+      }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email || !emailRegex.test(email)) {
+        alert("Please enter a valid email address.");
+        return;
+      }
+      if (!phone || phone.length < 10) {
+        alert("Please enter a valid 10-digit phone number.");
+        return;
+      }
+
+      showStep(4);
+      renderReview();
+    });
+  }
+
+  if (btnBackToStep3) {
+    btnBackToStep3.addEventListener("click", () => {
+      showStep(3);
+    });
+  }
+
+  function getDisplayPrice(priceObj) {
+    if (typeof priceObj === 'number') return priceObj;
+    if (!priceObj) return 0;
+    if (priceObj.default !== undefined) return Number(priceObj.default) || 0;
+    if (priceObj.full !== undefined) return Number(priceObj.full) || 0;
+    if (priceObj.half !== undefined) return Number(priceObj.half) || 0;
+    if (typeof priceObj === 'object') {
+      const vals = Object.values(priceObj).map(Number).filter(v => !isNaN(v));
+      if (vals.length > 0) return vals[0];
+    }
+    return Number(priceObj) || 0;
+  }
+
+  function getMenuItemDietType(item) {
+    return (item.type && item.type.toLowerCase() === "veg") ? "Veg" : "Non-Veg";
+  }
+
+  function renderDishes() {
+    if (!itemsContainer) return;
+    const scrollTop = itemsContainer.scrollTop;
+    itemsContainer.innerHTML = "";
+
+    let dishes = filterMenuItems(onlineMealTime, onlineDietType);
+    console.log("renderDishes: onlineMealTime =", onlineMealTime, "onlineDietType =", onlineDietType, "count =", dishes.length);
+
+    if (searchVal) {
+      dishes = dishes.filter(d =>
+        d.name.toLowerCase().includes(searchVal) ||
+        (d.description && d.description.toLowerCase().includes(searchVal))
+      );
+    }
+
+    if (dishes.length === 0) {
+      const msg = onlineMealTime === "Snacks"
+        ? "Shaam Ki Mehfil menu launching soon — check back shortly!"
+        : "No dishes found matching your search.";
+      itemsContainer.innerHTML = `<div style="grid-column:1/-1; text-align:center; font-size:0.9rem; color:var(--color-text-soft); font-style:italic;">${msg}</div>`;
+      return;
+    }
+
+    dishes.forEach(dish => {
+      const card = document.createElement("div");
+      card.className = "dine-dish-card";
+
+      const cartItem = onlineCart.find(i => i.id === dish.id);
+      const isVegSymbol = getMenuItemDietType(dish) === "Veg" ? "🟢" : "🔴";
+
+      card.innerHTML = `
+        <div class="dine-dish-info">
+          <h4>${isVegSymbol} ${dish.name}</h4>
+          <p class="dine-dish-desc">${dish.description || 'Freshly made with traditional recipes.'}</p>
+          <div class="dine-dish-price">₹${getDisplayPrice(dish.price)}</div>
+        </div>
+        <div class="dine-dish-actions">
+          ${cartItem ? `
+            <div class="dine-sb-item-controls" style="margin-top: 8px;">
+              <button class="dine-qty-btn minus-btn" data-id="${dish.id}">-</button>
+              <span class="dine-qty-val">${cartItem.quantity}</span>
+              <button class="dine-qty-btn plus-btn" data-id="${dish.id}">+</button>
+            </div>
+          ` : `
+            <button class="btn btn-dine-primary add-btn" data-id="${dish.id}" style="width:100%; padding:6px 12px; font-size:0.75rem; margin-top:8px;">+ Add to Order</button>
+          `}
+        </div>
+      `;
+
+      const addBtn = card.querySelector(".add-btn");
+      if (addBtn) addBtn.addEventListener("click", () => addToCart(dish));
+
+      const plusBtn = card.querySelector(".plus-btn");
+      if (plusBtn) plusBtn.addEventListener("click", () => updateCartQty(dish.id, 1));
+
+      const minusBtn = card.querySelector(".minus-btn");
+      if (minusBtn) minusBtn.addEventListener("click", () => updateCartQty(dish.id, -1));
+
+      itemsContainer.appendChild(card);
+    });
+    itemsContainer.scrollTop = scrollTop;
+  }
+
+  function addToCart(dish) {
+    const existing = onlineCart.find(i => i.id === dish.id);
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      onlineCart.push({
+        id: dish.id,
+        name: dish.name,
+        price: getDisplayPrice(dish.price),
+        quantity: 1,
+        size: dish.size || ""
+      });
+    }
+    renderDishes();
+    renderSidebar();
+  }
+
+  function updateCartQty(dishId, change) {
+    const item = onlineCart.find(i => i.id === dishId);
+    if (item) {
+      item.quantity += change;
+      if (item.quantity <= 0) {
+        onlineCart = onlineCart.filter(i => i.id !== dishId);
+      }
+    }
+    renderDishes();
+    renderSidebar();
+  }
+
+  function renderSidebar() {
+    if (!sidebarList) return;
+    sidebarList.innerHTML = "";
+
+    if (onlineCart.length === 0) {
+      sidebarList.innerHTML = `<div class="dine-empty-cart">No items added yet.</div>`;
+      if (sidebarTotal) sidebarTotal.textContent = "₹0";
+      return;
+    }
+
+    onlineCart.forEach(item => {
+      const row = document.createElement("div");
+      row.className = "dine-sidebar-item";
+      row.innerHTML = `
+        <div class="dine-sb-item-info">
+          <div class="dine-sb-item-name">${item.name}</div>
+          <div class="dine-sb-item-price">₹${item.price} x ${item.quantity}</div>
+        </div>
+        <div class="dine-sb-item-controls">
+          <button class="dine-qty-btn sb-minus" data-id="${item.id}">-</button>
+          <span class="dine-qty-val">${item.quantity}</span>
+          <button class="dine-qty-btn sb-plus" data-id="${item.id}">+</button>
+        </div>
+      `;
+
+      row.querySelector(".sb-plus").addEventListener("click", () => updateCartQty(item.id, 1));
+      row.querySelector(".sb-minus").addEventListener("click", () => updateCartQty(item.id, -1));
+
+      sidebarList.appendChild(row);
+    });
+
+    const total = onlineCart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    if (sidebarTotal) sidebarTotal.textContent = `₹${total}`;
+  }
+
+  function renderReview() {
+    reviewType.textContent = orderType === "delivery" ? "Delivery 🚚" : "Takeaway 🛍️";
+    if (orderType === "delivery") {
+      reviewFulfillmentRow.style.display = "block";
+      reviewFulfillmentVal.textContent = `${addressInput.value.trim()} (Landmark: ${landmarkInput.value.trim()}, Pincode: ${pincodeInput.value.trim()})`;
+    } else {
+      reviewFulfillmentRow.style.display = "block";
+      reviewFulfillmentVal.textContent = `Estimated Pickup: ${pickupTimeSelect.value}`;
+    }
+
+    reviewName.textContent = custNameInput.value.trim();
+    reviewEmail.textContent = custEmailInput.value.trim();
+    reviewPhone.textContent = custPhoneInput.value.trim();
+
+    reviewItemsTbody.innerHTML = "";
+    onlineCart.forEach(item => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${item.name}</td>
+        <td style="text-align: center;">${item.quantity}</td>
+        <td style="text-align: right; font-weight:600;">₹${item.price * item.quantity}</td>
+      `;
+      reviewItemsTbody.appendChild(tr);
+    });
+
+    const grandTotal = onlineCart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    if (reviewGrandTotal) reviewGrandTotal.textContent = `₹${grandTotal}`;
+  }
+
+  if (btnSubmitOrder) {
+    btnSubmitOrder.addEventListener("click", async () => {
+      btnSubmitOrder.disabled = true;
+      btnSubmitOrder.textContent = "Placing Order...";
+
+      const totalAmount = onlineCart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+      let tblNum = "Online Order";
+      if (orderType === "delivery") {
+        tblNum = `Delivery: ${addressInput.value.trim()}, Landmark: ${landmarkInput.value.trim()} (Pincode: ${pincodeInput.value.trim()})`;
+      } else {
+        tblNum = `Takeaway (Pickup: ${pickupTimeSelect.value})`;
+      }
+
+      const payload = {
+        customerName: custNameInput.value.trim(),
+        customerEmail: custEmailInput.value.trim().toLowerCase(),
+        customerPhone: custPhoneInput.value.trim(),
+        tableNumber: tblNum,
+        partySize: 1,
+        items: onlineCart.map(item => ({
+          menuItemId: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          size: item.size || ""
+        })),
+        totalAmount,
+        type: orderType
+      };
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/orders`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to submit online order.");
+        }
+
+        const data = await response.json();
+        
+        stepsHeader.style.display = "none";
+        pane1.style.display = "none";
+        pane2.style.display = "none";
+        pane3.style.display = "none";
+        pane4.style.display = "none";
+        paneTracker.style.display = "flex";
+
+        trackerOrderId.textContent = data.orderId || "ORD-XXXX";
+
+      } catch (err) {
+        console.error(err);
+        alert("Error placing order: " + err.message);
+        btnSubmitOrder.disabled = false;
+        btnSubmitOrder.textContent = "Place Order 🥡";
+      }
+    });
+  }
+}
+
+// 10. SERVICES ENQUIRY CONTROLLER
+function initServicesHub() {
+  const modal = document.getElementById("service-enquiry-modal");
+  const closeBtn = document.getElementById("enquiry-modal-close");
+  const successCloseBtn = document.getElementById("enq-success-close");
+  const form = document.getElementById("service-enquiry-form");
+
+  if (!modal) return;
+
+  function closeEnquiryModal() {
+    modal.style.display = "none";
+    document.body.style.overflow = "";
+  }
+
+  if (closeBtn) closeBtn.addEventListener("click", closeEnquiryModal);
+  if (successCloseBtn) successCloseBtn.addEventListener("click", closeEnquiryModal);
+
+  window.openEnquiryForm = function(serviceType) {
+    modal.style.display = "flex";
+    document.body.style.overflow = "hidden";
+
+    document.querySelectorAll(".enq-custom-fields").forEach(el => {
+      el.style.display = "none";
+    });
+
+    if (form) form.style.display = "block";
+    document.getElementById("enq-success-view").style.display = "none";
+
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const dateInput = document.getElementById("enq-date");
+    if (dateInput) {
+      dateInput.value = `${year}-${month}-${day}`;
+      dateInput.setAttribute("min", `${year}-${month}-${day}`);
+    }
+
+    let title = "Service Enquiry";
+    let targetBlockId = "";
+
+    if (serviceType === "birthday-parties") {
+      title = "Birthday Party Booking";
+      targetBlockId = "enq-fields-birthday";
+    } else if (serviceType === "events-celebrations") {
+      title = "Events & Celebrations";
+      targetBlockId = "enq-fields-events";
+    } else if (serviceType === "corporate-catering") {
+      title = "Corporate Events & Catering";
+      targetBlockId = "enq-fields-corporate";
+    } else if (serviceType === "catering-services") {
+      title = "Catering Services";
+      targetBlockId = "enq-fields-catering";
+    } else if (serviceType === "celebration-packages") {
+      title = "Celebration Packages";
+      targetBlockId = "enq-fields-packages";
+    } else if (serviceType === "bulk-orders") {
+      title = "Bulk & Pre-Orders";
+      targetBlockId = "enq-fields-bulk";
+    } else if (serviceType === "private-venue") {
+      title = "Private Venue Booking";
+      targetBlockId = "enq-fields-venue";
+    }
+
+    document.getElementById("enquiry-modal-title").textContent = title;
+    const block = document.getElementById(targetBlockId);
+    if (block) {
+      block.style.display = "block";
+    }
+
+    modal.setAttribute("data-active-service", title);
+  };
+
+  const serviceCards = document.querySelectorAll(".services-grid .service-card");
+  serviceCards.forEach(card => {
+    card.addEventListener("click", () => {
+      const type = card.getAttribute("data-service-type");
+      if (type === "book-table") {
+        document.getElementById("booking").scrollIntoView({ behavior: "smooth" });
+      } else if (type === "order-online") {
+        if (typeof window.openOrderOnlineFlow === "function") {
+          window.openOrderOnlineFlow();
+        }
+      } else if (type === "family-dining") {
+        const dineGuests = document.getElementById("dine-guests-select");
+        if (dineGuests) {
+          dineGuests.value = "10";
+        }
+        document.getElementById("booking").scrollIntoView({ behavior: "smooth" });
+      } else if (type) {
+        window.openEnquiryForm(type);
+      }
+    });
+  });
+
+  const triggers = [
+    document.getElementById("nav-book-btn"),
+    document.getElementById("mobile-menu-book-btn"),
+    document.getElementById("hero-book-order-btn"),
+    document.getElementById("mobile-sticky-book-btn"),
+    document.getElementById("menu-reserve-btn")
+  ];
+
+  triggers.forEach(t => {
+    if (t) {
+      t.addEventListener("click", (e) => {
+        e.preventDefault();
+        const servSec = document.getElementById("our-services");
+        if (servSec) servSec.scrollIntoView({ behavior: "smooth" });
+      });
+    }
+  });
+
+  const navLinks = [
+    { id: "nav-order-online-link", action: "order" },
+    { id: "mobile-order-online-link", action: "order" },
+    { id: "nav-book-table-link", action: "book" },
+    { id: "mobile-book-table-link", action: "book" },
+    { id: "nav-catering-link", action: "catering" },
+    { id: "mobile-catering-link", action: "catering" }
+  ];
+
+  navLinks.forEach(linkObj => {
+    const el = document.getElementById(linkObj.id);
+    if (el) {
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (linkObj.action === "book") {
+          document.getElementById("booking").scrollIntoView({ behavior: "smooth" });
+        } else if (linkObj.action === "order") {
+          if (typeof window.openOrderOnlineFlow === "function") {
+            window.openOrderOnlineFlow();
+          }
+        } else if (linkObj.action === "catering") {
+          window.openEnquiryForm("catering-services");
+        }
+      });
+    }
+  });
+
+  const phoneInput = document.getElementById("enq-phone");
+  if (phoneInput) {
+    phoneInput.setAttribute("maxlength", "10");
+    phoneInput.setAttribute("inputmode", "numeric");
+    phoneInput.addEventListener("input", (e) => {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    });
+  }
+
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const nameInput = document.getElementById("enq-name");
+      const phoneInput = document.getElementById("enq-phone");
+      const emailInput = document.getElementById("enq-email");
+      const dateInput = document.getElementById("enq-date");
+      const guestsSelect = document.getElementById("enq-guests");
+      const timeSelect = document.getElementById("enq-time");
+      const submitBtn = document.getElementById("enq-submit-btn");
+
+      let isValid = true;
+      [nameInput, phoneInput, emailInput, dateInput].forEach(input => {
+        if (!input.value.trim()) {
+          input.style.borderColor = "var(--color-accent)";
+          isValid = false;
+        } else {
+          input.style.borderColor = "";
+        }
+      });
+
+      if (!isValid) return;
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(emailInput.value.trim())) {
+        emailInput.style.borderColor = "var(--color-accent)";
+        alert("Please enter a valid email address.");
+        return;
+      }
+
+      if (phoneInput.value.length < 10) {
+        phoneInput.style.borderColor = "var(--color-accent)";
+        alert("Please enter a valid 10-digit phone number.");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting Enquiry...";
+
+      let activeService = modal.getAttribute("data-active-service") || "Service Enquiry";
+      let customDetails = [];
+
+      if (activeService === "Birthday Party Booking") {
+        customDetails.push(`Cake: ${document.getElementById("enq-birth-cake").value}`);
+        customDetails.push(`Decor: ${document.getElementById("enq-birth-decor").value}`);
+      } else if (activeService === "Events & Celebrations") {
+        customDetails.push(`Event Type: ${document.getElementById("enq-event-type").value}`);
+        customDetails.push(`Exclusivity: ${document.getElementById("enq-event-slot").value}`);
+      } else if (activeService === "Corporate Events & Catering") {
+        const comp = document.getElementById("enq-corp-name").value.trim();
+        if (comp) customDetails.push(`Company: ${comp}`);
+        customDetails.push(`AV: ${document.getElementById("enq-corp-av").value}`);
+      } else if (activeService === "Catering Services") {
+        const addr = document.getElementById("enq-cat-address").value.trim();
+        if (addr) customDetails.push(`Venue: ${addr}`);
+        customDetails.push(`Diet: ${document.getElementById("enq-cat-diet").value}`);
+        customDetails.push(`Cuisine: ${document.getElementById("enq-cat-cuisine").value}`);
+      } else if (activeService === "Celebration Packages") {
+        const radio = document.querySelector('input[name="enq-package-select"]:checked');
+        customDetails.push(`Package: ${radio ? radio.value : "Silver"}`);
+      } else if (activeService === "Bulk & Pre-Orders") {
+        const det = document.getElementById("enq-bulk-details").value.trim();
+        if (det) customDetails.push(`Items: ${det}`);
+        customDetails.push(`Fulfill: ${document.getElementById("enq-bulk-fulfillment").value}`);
+      } else if (activeService === "Private Venue Booking") {
+        customDetails.push(`Setup: ${document.getElementById("enq-venue-setup").value}`);
+        customDetails.push(`Excl: ${document.getElementById("enq-venue-excl").value}`);
+      }
+
+      const extraNotes = document.getElementById("enq-notes").value.trim();
+      if (extraNotes) {
+        customDetails.push(`Note: ${extraNotes}`);
+      }
+
+      const payload = {
+        name: nameInput.value.trim(),
+        email: emailInput.value.trim(),
+        phone: phoneInput.value.trim(),
+        date: dateInput.value,
+        time: timeSelect.value,
+        partySize: parseInt(guestsSelect.value, 10),
+        occasion: activeService,
+        seating: "Enquiry Form",
+        notes: customDetails.join(" | ")
+      };
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/bookings`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to submit enquiry.");
+        }
+
+        const data = await response.json();
+        
+        form.style.display = "none";
+        const successView = document.getElementById("enq-success-view");
+        
+        document.getElementById("enq-success-id").textContent = data.bookingId || "GR-" + Math.floor(1000 + Math.random() * 9000);
+        document.getElementById("enq-success-service-name").textContent = payload.occasion;
+        document.getElementById("enq-success-date").textContent = payload.date;
+        document.getElementById("enq-success-guests").textContent = `${payload.partySize} Guests`;
+        document.getElementById("enq-success-name").textContent = payload.name;
+        document.getElementById("enq-success-phone").textContent = payload.phone;
+
+        successView.style.display = "block";
+        form.reset();
+
+      } catch (err) {
+        console.error("Enquiry submission error:", err);
+        alert("Error: " + err.message);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit Enquiry";
+      }
+    });
+  }
+}
+
 

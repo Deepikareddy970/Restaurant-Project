@@ -51,13 +51,25 @@
         {
           "@type": "OpeningHoursSpecification",
           "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          "opens": "07:00",
+          "closes": "10:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
           "opens": "12:00",
           "closes": "15:00"
         },
         {
           "@type": "OpeningHoursSpecification",
           "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-          "opens": "18:00",
+          "opens": "17:00",
+          "closes": "21:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          "opens": "18:30",
           "closes": "22:00"
         }
       ],
@@ -123,13 +135,16 @@
       </a>
       
       <nav class="nav-desktop" role="navigation" aria-label="Desktop Navigation">
-        <a href="#about" class="nav-link">Sanctuary</a>
-        <a href="#menu" class="nav-link">The Menu</a>
-        <a href="#" class="nav-link nav-dine-link" id="nav-order-link">🍽️ Dine In</a>
-        <a href="#booking" class="nav-link">Reservations</a>
-        <a href="#ambience" class="nav-link">Ambience</a>
-        <a href="#contact" class="nav-link">Find Us</a>
-        <a href="#booking" class="btn btn-primary" id="nav-book-btn">Book a Table</a>
+        <a href="#" class="nav-link">Home</a>
+        <a href="#menu" class="nav-link">Menu</a>
+        <a href="#" class="nav-link" id="nav-order-online-link">Order Online</a>
+        <a href="#" class="nav-link" id="nav-book-table-link">Book a Table</a>
+        <a href="#our-services" class="nav-link" id="nav-parties-events-link">Parties & Events</a>
+        <a href="#" class="nav-link" id="nav-catering-link">Catering</a>
+        <a href="#special-offers" class="nav-link">Offers</a>
+        <a href="#about" class="nav-link">About Us</a>
+        <a href="#contact" class="nav-link">Contact</a>
+        <a href="#" class="btn btn-primary" id="nav-book-btn">Book / Order Now</a>
       </nav>
 
       <button class="burger-btn" id="burger-btn" aria-expanded="false" aria-controls="nav-mobile" aria-label="Toggle Navigation Menu">
@@ -142,13 +157,16 @@
 
   <!-- Mobile Navigation Overlay -->
   <nav class="nav-mobile-overlay" id="nav-mobile" aria-hidden="true" role="navigation" aria-label="Mobile Navigation">
-    <a href="#about" class="nav-link">Sanctuary</a>
-    <a href="#menu" class="nav-link">The Menu</a>
-    <a href="#" class="nav-link nav-dine-link" id="mobile-order-link">🍽️ Dine In</a>
-    <a href="#booking" class="nav-link">Reservations</a>
-    <a href="#ambience" class="nav-link">Ambience</a>
-    <a href="#contact" class="nav-link">Find Us</a>
-    <a href="#booking" class="btn btn-primary" id="mobile-menu-book-btn" style="margin-top: var(--space-md);">Book a Table</a>
+    <a href="#" class="nav-link">Home</a>
+    <a href="#menu" class="nav-link">Menu</a>
+    <a href="#" class="nav-link" id="mobile-order-online-link">Order Online</a>
+    <a href="#" class="nav-link" id="mobile-book-table-link">Book a Table</a>
+    <a href="#our-services" class="nav-link" id="mobile-parties-events-link">Parties & Events</a>
+    <a href="#" class="nav-link" id="mobile-catering-link">Catering</a>
+    <a href="#special-offers" class="nav-link">Offers</a>
+    <a href="#about" class="nav-link">About Us</a>
+    <a href="#contact" class="nav-link">Contact</a>
+    <a href="#" class="btn btn-primary" id="mobile-menu-book-btn" style="margin-top: var(--space-md);">Book / Order Now</a>
   </nav>
 
   <!-- Main Content -->
@@ -166,8 +184,8 @@
         <p class="hero-sub">Where wood-fired heritage meets contemporary cafe culture in climate-controlled luxury</p>
         
         <div class="hero-ctas">
-          <a href="#booking" class="btn btn-primary">Book a Table</a>
-          <a href="#" class="btn btn-accent-sec" id="hero-order-btn">🍽️ Dine In</a>
+          <a href="#" class="btn btn-primary" id="hero-book-order-btn">Book / Order Now</a>
+          <a href="#our-services" class="btn btn-accent-sec" id="hero-services-btn">Explore Services</a>
         </div>
         
         <!-- Inline Booking Widget -->
@@ -194,10 +212,10 @@
           <div class="widget-item">
             <label for="widget-time">Time</label>
             <select id="widget-time">
-              <option value="12:00 PM">12:00 PM (Lunch)</option>
-              <option value="01:30 PM">01:30 PM (Lunch)</option>
-              <option value="07:00 PM">07:00 PM (Dinner)</option>
-              <option value="08:30 PM">08:30 PM (Dinner)</option>
+              <option value="08:00 AM">08:00 AM (Breakfast)</option>
+              <option value="12:30 PM">12:30 PM (Lunch)</option>
+              <option value="06:00 PM">06:00 PM (Shaam Ki Mehfil)</option>
+              <option value="08:00 PM">08:00 PM (Dinner)</option>
             </select>
           </div>
           <button class="btn btn-primary widget-btn" id="hero-widget-btn">Find Table</button>
@@ -250,7 +268,7 @@
 
         <div class="grid grid-4 occasions-grid">
           
-          <div class="occasion-card reveal-scale" style="transition-delay: 100ms;">
+          <div class="occasion-card reveal-scale" style="transition-delay: 100ms; cursor: pointer;" data-service="Book a Table">
             <div class="occasion-bg">
               <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?q=80&w=600" alt="Candlelit intimate dining experience">
             </div>
@@ -261,7 +279,7 @@
             </div>
           </div>
 
-          <div class="occasion-card reveal-scale" style="transition-delay: 200ms;">
+          <div class="occasion-card reveal-scale" style="transition-delay: 200ms; cursor: pointer;" data-service="Family / Group Dining">
             <div class="occasion-bg">
               <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=600" alt="Families sharing a rich multi-cuisine spread">
             </div>
@@ -272,7 +290,7 @@
             </div>
           </div>
 
-          <div class="occasion-card reveal-scale" style="transition-delay: 300ms;">
+          <div class="occasion-card reveal-scale" style="transition-delay: 300ms; cursor: pointer;" data-service="Dine-In / Order Online">
             <div class="occasion-bg">
               <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=600" alt="Modern espresso machine and latte art">
             </div>
@@ -283,7 +301,7 @@
             </div>
           </div>
 
-          <div class="occasion-card reveal-scale" style="transition-delay: 400ms;">
+          <div class="occasion-card reveal-scale" style="transition-delay: 400ms; cursor: pointer;" data-service="Private Events / Venue Booking">
             <div class="occasion-bg">
               <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=600" alt="Private chef's hearth event">
             </div>
@@ -343,7 +361,7 @@
           </button>
           <button class="meal-card" data-meal="Snacks" aria-pressed="false">
             <span class="meal-icon">🍟</span>
-            <span class="meal-label">Snacks / Tea Time</span>
+            <span class="meal-label">Shaam Ki Mehfil</span>
           </button>
         </div>
 
@@ -365,7 +383,7 @@
         </div>
 
         <div class="text-center reveal" style="margin-top: var(--space-xl);">
-          <a href="#booking" class="btn btn-secondary">Reserve a Table to Taste</a>
+          <button class="btn btn-secondary" id="menu-reserve-btn">Book / Order / Services Hub</button>
         </div>
       </div>
     </section>
@@ -396,6 +414,109 @@
           <div class="testimonial-card reveal" style="transition-delay: 300ms;">
             <p class="testimonial-quote">"We celebrated my father's 60th birthday here. The multi-cuisine menu allowed everyone to find exactly what they loved, from paneer tikka to dim sums. Service was top-notch!"</p>
             <div class="testimonial-author">Rohan M. • Family Gatherings</div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Services Section -->
+    <section class="services-section" id="our-services" aria-label="Our Services">
+      <div class="container text-center reveal" style="margin-bottom: var(--space-lg);">
+        <h2 class="font-serif">Our Premium <span class="italic">Services</span></h2>
+        <div class="heading-accent" style="margin: 8px auto var(--space-xs);"></div>
+        <p style="max-width: 600px; margin: 0 auto;">From intimate dining to grand celebrations and outdoor catering, we craft experiences that linger.</p>
+        
+        <div class="services-grid">
+          
+          <div class="service-card" data-service-type="book-table">
+            <div class="service-card-icon">🍽️</div>
+            <div class="service-card-content">
+              <h3>Book a Table</h3>
+              <p>Reserve a cozy table in our climate-controlled sanctuary.</p>
+              <span class="service-card-action">Book Now &rarr;</span>
+            </div>
+          </div>
+
+          <div class="service-card" data-service-type="order-online">
+            <div class="service-card-icon">🥡</div>
+            <div class="service-card-content">
+              <h3>Order Online</h3>
+              <p>Get hot food delivered or schedule a takeaway pickup.</p>
+              <span class="service-card-action">Order Now &rarr;</span>
+            </div>
+          </div>
+
+          <div class="service-card" data-service-type="birthday-parties">
+            <div class="service-card-icon">🎂</div>
+            <div class="service-card-content">
+              <h3>Birthday Parties</h3>
+              <p>Celebrate with customized menus, decor &amp; dedicated staff.</p>
+              <span class="service-card-action">Enquire Now &rarr;</span>
+            </div>
+          </div>
+
+          <div class="service-card" data-service-type="events-celebrations">
+            <div class="service-card-icon">🎉</div>
+            <div class="service-card-content">
+              <h3>Events &amp; Celebrations</h3>
+              <p>Host anniversaries, reunions, and family milestones.</p>
+              <span class="service-card-action">Enquire Now &rarr;</span>
+            </div>
+          </div>
+
+          <div class="service-card" data-service-type="corporate-catering">
+            <div class="service-card-icon">🏢</div>
+            <div class="service-card-content">
+              <h3>Corporate Events &amp; Catering</h3>
+              <p>Board lunches, business meetings, and corporate gatherings.</p>
+              <span class="service-card-action">Enquire Now &rarr;</span>
+            </div>
+          </div>
+
+          <div class="service-card" data-service-type="catering-services">
+            <div class="service-card-icon">🍱</div>
+            <div class="service-card-content">
+              <h3>Catering Services</h3>
+              <p>Exquisite multi-cuisine catering delivered directly to your venue.</p>
+              <span class="service-card-action">Enquire Now &rarr;</span>
+            </div>
+          </div>
+
+          <div class="service-card" data-service-type="family-dining">
+            <div class="service-card-icon">👨‍👩‍👧</div>
+            <div class="service-card-content">
+              <h3>Family &amp; Group Dining</h3>
+              <p>Spacious seating &amp; sharing spreads for 10+ guests.</p>
+              <span class="service-card-action">Reserve Table &rarr;</span>
+            </div>
+          </div>
+
+          <div class="service-card" data-service-type="celebration-packages">
+            <div class="service-card-icon">🎁</div>
+            <div class="service-card-content">
+              <h3>Celebration Packages</h3>
+              <p>All-inclusive packages with predefined menus &amp; decor.</p>
+              <span class="service-card-action">Enquire Now &rarr;</span>
+            </div>
+          </div>
+
+          <div class="service-card" data-service-type="bulk-orders">
+            <div class="service-card-icon">📦</div>
+            <div class="service-card-content">
+              <h3>Bulk &amp; Pre-Orders</h3>
+              <p>Place large-volume orders for home or office gatherings.</p>
+              <span class="service-card-action">Enquire Now &rarr;</span>
+            </div>
+          </div>
+
+          <div class="service-card" data-service-type="private-venue">
+            <div class="service-card-icon">🎊</div>
+            <div class="service-card-content">
+              <h3>Private Venue Booking</h3>
+              <p>Book our premium AC dining hall for exclusive private use.</p>
+              <span class="service-card-action">Enquire Now &rarr;</span>
+            </div>
           </div>
 
         </div>
@@ -457,8 +578,10 @@
                   <div class="form-group">
                     <label for="book-session">Session</label>
                     <select id="book-session" class="form-input">
-                      <option value="Lunch">Lunch (12:00 PM – 3:00 PM)</option>
-                      <option value="Dinner">Dinner (6:00 PM – 10:00 PM)</option>
+                      <option value="Breakfast">Breakfast (7:00 AM – 10:00 AM)</option>
+                      <option value="Lunch">Lunch (12:00 Noon – 3:00 PM)</option>
+                      <option value="Shaam Ki Mehfil">Shaam Ki Mehfil (5:00 PM – 9:00 PM)</option>
+                      <option value="Dinner">Dinner (6:30 PM – 10:00 PM)</option>
                     </select>
                   </div>
                   <div class="form-group">
@@ -684,7 +807,13 @@
               <div class="info-item-icon" aria-hidden="true">⏰</div>
               <div class="info-item-content">
                 <h4>Opening Hours</h4>
-                <p>Afternoon: 12:00 PM – 3:00 PM IST<br>Evening: 6:00 PM – 10:00 PM IST</p>
+                <p style="margin: 0; font-size: 0.9rem;">
+                  <strong>Breakfast:</strong> 7:00 AM – 10:00 AM<br>
+                  <strong>Lunch:</strong> 12:00 Noon – 3:00 PM<br>
+                  <strong>Shaam Ki Mehfil:</strong> 5:00 PM – 9:00 PM<br>
+                  <span style="font-size: 0.75rem; color: var(--color-text-soft); display: block; margin-bottom: 2px;">(Café • Chaat • Snacks ☕)</span>
+                  <strong>Dinner:</strong> 6:30 PM – 10:00 PM
+                </p>
               </div>
             </div>
           </div>
@@ -789,7 +918,7 @@
 
   <!-- Sticky Bottom Booking Bar (Mobile Only) -->
   <div class="sticky-mobile-bar">
-    <a href="#booking" class="btn btn-primary" style="width: 100%;">Book a Table</a>
+    <button class="btn btn-primary" id="mobile-sticky-book-btn" style="width: 100%;">Book / Order Now</button>
   </div>
 
   <!-- Lightbox DOM Element Container -->
@@ -888,7 +1017,7 @@
                   </button>
                   <button class="meal-card" data-dine-meal="Snacks" aria-pressed="false">
                     <span class="meal-icon">🍟</span>
-                    <span class="meal-label">Snacks / Tea Time</span>
+                    <span class="meal-label">Shaam Ki Mehfil</span>
                   </button>
                 </div>
 
@@ -1024,6 +1153,518 @@
       </div>
     </div>
   </div>
+  <!-- Order Online Modal -->
+  <div id="order-online-modal" class="dine-modal-overlay" role="dialog" aria-modal="true" aria-label="Order Online (Takeaway & Delivery)" style="display: none;">
+    <div class="dine-modal-container" style="max-width: 900px; width: 95%;">
+      <div class="dine-modal-header">
+        <h2 class="font-serif">🥡 Order Online</h2>
+        <button id="online-modal-close" class="dine-modal-close-btn" aria-label="Close Order Wizard">✕</button>
+      </div>
+
+      <!-- Stepper Progress Header -->
+      <div class="dine-wizard-steps" id="online-wizard-steps-header">
+        <div class="wizard-step active" data-step="1">
+          <span class="step-num">1</span>
+          <span class="step-label">Order Type</span>
+        </div>
+        <div class="wizard-step" data-step="2">
+          <span class="step-num">2</span>
+          <span class="step-label">Dishes</span>
+        </div>
+        <div class="wizard-step" data-step="3">
+          <span class="step-num">3</span>
+          <span class="step-label">Details</span>
+        </div>
+        <div class="wizard-step" data-step="4">
+          <span class="step-num">4</span>
+          <span class="step-label">Review</span>
+        </div>
+      </div>
+
+      <!-- Step Content Area -->
+      <div class="dine-modal-body">
+        
+        <!-- STEP 1: Order Type -->
+        <div class="dine-step-pane active" id="online-step-1">
+          <div class="step-instruction">
+            <h3>Select Delivery or Takeaway</h3>
+            <p>Please select your preferred fulfillment method and fill out the details.</p>
+          </div>
+          
+          <!-- Delivery/Takeaway Toggle -->
+          <div class="meal-toggle-container" style="margin-bottom: var(--space-md); justify-content: center; display: flex;">
+            <div class="veg-nonveg-toggle" style="display: flex; gap: 8px;">
+              <button type="button" class="veg-nonveg-toggle-btn active" id="btn-type-delivery" style="padding: 10px 24px; border-radius: 20px; font-weight: 700;">
+                🚚 Delivery
+              </button>
+              <button type="button" class="veg-nonveg-toggle-btn" id="btn-type-takeaway" style="padding: 10px 24px; border-radius: 20px; font-weight: 700;">
+                🛍️ Takeaway
+              </button>
+            </div>
+          </div>
+
+          <!-- Delivery Fields -->
+          <div id="online-delivery-fields">
+            <div class="dine-input-group" style="margin-bottom: var(--space-xs);">
+              <label for="online-address">Delivery Address <span style="color: var(--color-dine-accent);">*</span></label>
+              <input type="text" id="online-address" class="dine-input" placeholder="House/Flat No, Building Name, Street">
+            </div>
+            <div class="dine-form-grid">
+              <div class="dine-input-group">
+                <label for="online-landmark">Landmark</label>
+                <input type="text" id="online-landmark" class="dine-input" placeholder="e.g. Near Coop Bank">
+              </div>
+              <div class="dine-input-group">
+                <label for="online-pincode">Pincode <span style="color: var(--color-dine-accent);">*</span></label>
+                <input type="text" id="online-pincode" class="dine-input" placeholder="765017" maxlength="6" inputmode="numeric">
+              </div>
+            </div>
+          </div>
+
+          <!-- Takeaway Fields -->
+          <div id="online-takeaway-fields" style="display: none;">
+            <div class="dine-input-group">
+              <label for="online-pickup-time">Estimated Pickup Time</label>
+              <select id="online-pickup-time" class="dine-select">
+                <option value="20 mins">As soon as possible (20 mins)</option>
+                <option value="30 mins">In 30 minutes</option>
+                <option value="45 mins">In 45 minutes</option>
+                <option value="60 mins">In 1 hour</option>
+                <option value="90 mins">In 1.5 hours</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="dine-step-actions" style="margin-top: var(--space-md); display: flex; justify-content: space-between;">
+            <div></div> <!-- placeholder -->
+            <button class="btn btn-dine-primary" id="online-btn-goto-step2">Next: Choose Dishes →</button>
+          </div>
+        </div>
+
+        <!-- STEP 2: Menu Selection -->
+        <div class="dine-step-pane" id="online-step-2" style="display: none;">
+          <div class="dine-menu-wizard-layout">
+            <!-- Left: Menu Browser -->
+            <div class="dine-menu-browser">
+              <div class="dine-search-filter-row" style="display: flex; flex-direction: column; gap: var(--space-xs); align-items: stretch;">
+                <input type="text" id="online-menu-search" class="dine-search-input" placeholder="🔍 Search dishes...">
+                
+                <!-- Online Meal-Time Selector Row -->
+                <div class="meal-time-selector" id="online-meal-time-selector" style="margin-bottom: 8px;">
+                  <button class="meal-card" data-online-meal="Breakfast" aria-pressed="false">
+                    <span class="meal-icon">🌅</span>
+                    <span class="meal-label">Breakfast</span>
+                  </button>
+                  <button class="meal-card active" data-online-meal="Lunch" aria-pressed="true">
+                    <span class="meal-icon">☀️</span>
+                    <span class="meal-label">Lunch</span>
+                  </button>
+                  <button class="meal-card" data-online-meal="Dinner" aria-pressed="false">
+                    <span class="meal-icon">🌙</span>
+                    <span class="meal-label">Dinner</span>
+                  </button>
+                  <button class="meal-card" data-online-meal="Snacks" aria-pressed="false">
+                    <span class="meal-icon">🍟</span>
+                    <span class="meal-label">Shaam Ki Mehfil</span>
+                  </button>
+                </div>
+
+                <!-- Online Veg/Non-Veg Toggle Row -->
+                <div class="meal-toggle-container" style="margin-bottom: 8px;">
+                  <div class="veg-nonveg-toggle">
+                    <button class="veg-nonveg-toggle-btn active" data-online-diet="Veg">
+                      <span class="dot dot-veg"></span> Veg
+                    </button>
+                    <button class="veg-nonveg-toggle-btn" data-online-diet="Non-Veg">
+                      <span class="dot dot-nonveg"></span> Non-Veg
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="dine-menu-items-grid" id="online-menu-items-container">
+                <!-- Populated dynamically via JS -->
+              </div>
+            </div>
+
+            <!-- Right: Current Order Sidebar -->
+            <div class="dine-menu-sidebar">
+              <h3 class="font-serif">Current Order</h3>
+              <div class="dine-sidebar-items" id="online-sidebar-items-list">
+                <div class="dine-empty-cart">No items added yet. Click "Add to Order" to begin!</div>
+              </div>
+              <div class="dine-sidebar-summary">
+                <div class="dine-summary-line">
+                  <span>Total Amount:</span>
+                  <span id="online-sidebar-total" class="dine-total-val">₹0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="dine-step-actions" style="margin-top: var(--space-md); display: flex; justify-content: space-between;">
+            <button class="btn btn-dine-secondary" id="online-btn-back-to-step1">← Order Type</button>
+            <button class="btn btn-dine-primary" id="online-btn-goto-step3">Next: Customer Details →</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: Customer Details -->
+        <div class="dine-step-pane" id="online-step-3" style="display: none;">
+          <div class="step-instruction">
+            <h3>Enter Customer Information</h3>
+            <p>Please enter your contact details. The email and phone number are required to submit the order.</p>
+          </div>
+          <div class="dine-form-grid-vertical">
+            <div class="dine-input-group">
+              <label for="online-cust-name">Full Name <span style="color: var(--color-dine-accent);">*</span></label>
+              <input type="text" id="online-cust-name" class="dine-input" placeholder="e.g. Rahul Sharma" required>
+            </div>
+            <div class="dine-input-group">
+              <label for="online-cust-email">Email Address <span style="color: var(--color-dine-accent);">*</span></label>
+              <input type="email" id="online-cust-email" class="dine-input" placeholder="e.g. name@example.com" required>
+            </div>
+            <div class="dine-input-group">
+              <label for="online-cust-phone">Phone Number <span style="color: var(--color-dine-accent);">*</span></label>
+              <input type="tel" id="online-cust-phone" class="dine-input" placeholder="e.g. 9876543210" required maxlength="10" inputmode="numeric" pattern="[0-9]{10}">
+            </div>
+          </div>
+          <div class="dine-step-actions" style="margin-top: var(--space-md); display: flex; justify-content: space-between;">
+            <button class="btn btn-dine-secondary" id="online-btn-back-to-step2">← Choose Dishes</button>
+            <button class="btn btn-dine-primary" id="online-btn-goto-step4">Next: Review Order →</button>
+          </div>
+        </div>
+
+        <!-- STEP 4: Order Review & Confirmation -->
+        <div class="dine-step-pane" id="online-step-4" style="display: none;">
+          <div class="step-instruction">
+            <h3>Review Your Online Order</h3>
+            <p>Please double-check your fulfillment details and items before placing the order.</p>
+          </div>
+          
+          <div class="dine-review-summary-box">
+            <div class="dine-review-metadata">
+              <div>
+                <strong>Order Type:</strong> <span id="online-review-type">Delivery</span>
+              </div>
+              <div id="online-review-fulfillment-row">
+                <strong>Address:</strong> <span id="online-review-fulfillment-val">-</span>
+              </div>
+              <div>
+                <strong>Name:</strong> <span id="online-review-name">-</span>
+              </div>
+              <div>
+                <strong>Email:</strong> <span id="online-review-email">-</span>
+              </div>
+              <div>
+                <strong>Phone:</strong> <span id="online-review-phone">-</span>
+              </div>
+            </div>
+
+            <div class="dine-review-items-container">
+              <table class="dine-review-table-list">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th style="text-align: center;">Qty</th>
+                    <th style="text-align: right;">Total</th>
+                  </tr>
+                </thead>
+                <tbody id="online-review-items-tbody">
+                  <!-- Populated dynamically via JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <div class="dine-review-total-row">
+              <span>Total Amount:</span>
+              <span id="online-review-grand-total">₹0</span>
+            </div>
+          </div>
+
+          <div class="dine-step-actions" style="margin-top: var(--space-md); display: flex; justify-content: space-between;">
+            <button class="btn btn-dine-secondary" id="online-btn-back-to-step3">← Contact Details</button>
+            <button class="btn btn-dine-primary" id="online-btn-submit-order" style="min-width: 200px;">Place Order 🥡</button>
+          </div>
+        </div>
+
+        <!-- SUCCESS TRACKER -->
+        <div class="dine-step-pane" id="online-step-tracker-pane" style="display: none;">
+          <div class="step-instruction text-center" style="margin: auto 0; padding: var(--space-md) 0;">
+            <div class="dine-tracker-icon" style="font-size: 4rem; margin-bottom: var(--space-sm); color: var(--color-dine-accent);">🎉</div>
+            <h3 class="font-serif" style="font-size: 2.25rem; color: var(--color-dine-primary); margin-bottom: var(--space-xs);">Thank You for Your Order!</h3>
+            <p style="font-size: 1.1rem; margin-bottom: var(--space-md); color: var(--color-text);">Order ID: <span id="online-tracker-order-id" style="font-weight: 700; color: var(--color-dine-primary);">ORD-XXXX</span></p>
+            <div class="dine-success-badge" style="margin: var(--space-md) auto; padding: 12px 24px; background: rgba(13, 92, 117, 0.08); border: 1px solid rgba(13, 92, 117, 0.15); border-radius: 30px; display: inline-flex; align-items: center; gap: 8px; color: var(--color-dine-primary); font-weight: 600; font-size: 0.95rem;">
+              <span>✨</span> Your order has been received. Our team will prepare and package it with care. <span>✨</span>
+            </div>
+          </div>
+
+          <div class="dine-step-actions" style="margin-top: var(--space-md); justify-content: center; width: 100%; display: flex;">
+            <button class="btn btn-dine-primary" id="online-btn-tracker-close" style="padding: 12px 32px; font-size: 1rem; min-width: 160px; justify-content: center;">Close &amp; Exit</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Service Enquiry Modal -->
+  <div id="service-enquiry-modal" class="dine-modal-overlay" role="dialog" aria-modal="true" aria-label="Service Enquiry Form" style="display: none;">
+    <div class="dine-modal-container" style="max-width: 750px; width: 95%;">
+      <div class="dine-modal-header">
+        <div>
+          <h2 class="font-serif" id="enquiry-modal-title">Service Enquiry</h2>
+          <p style="font-size: 0.8125rem; color: var(--color-text-soft); margin: 0;">Fill out the details below to request a booking or quotation.</p>
+        </div>
+        <button id="enquiry-modal-close" class="dine-modal-close-btn" aria-label="Close Enquiry Modal">✕</button>
+      </div>
+
+      <div class="dine-modal-body">
+        
+        <!-- Standard Contact Details (Shared) -->
+        <form id="service-enquiry-form" novalidate>
+          <div class="dine-form-grid" style="margin-bottom: var(--space-sm);">
+            <div class="dine-input-group">
+              <label for="enq-name">Full Name <span style="color: var(--color-dine-accent);">*</span></label>
+              <input type="text" id="enq-name" class="dine-input" placeholder="Enter your name" required>
+            </div>
+            <div class="dine-input-group">
+              <label for="enq-phone">Phone Number <span style="color: var(--color-dine-accent);">*</span></label>
+              <input type="tel" id="enq-phone" class="dine-input" placeholder="e.g. 9876543210" required maxlength="10" inputmode="numeric" pattern="[0-9]{10}">
+            </div>
+          </div>
+
+          <div class="dine-form-grid" style="margin-bottom: var(--space-sm);">
+            <div class="dine-input-group">
+              <label for="enq-email">Email Address <span style="color: var(--color-dine-accent);">*</span></label>
+              <input type="email" id="enq-email" class="dine-input" placeholder="name@example.com" required>
+            </div>
+            <div class="dine-input-group">
+              <label for="enq-date">Preferred Date <span style="color: var(--color-dine-accent);">*</span></label>
+              <input type="date" id="enq-date" class="dine-input" required>
+            </div>
+          </div>
+
+          <div class="dine-form-grid" style="margin-bottom: var(--space-sm);">
+            <div class="dine-input-group">
+              <label for="enq-guests">Expected Guests / Qty <span style="color: var(--color-dine-accent);">*</span></label>
+              <select id="enq-guests" class="dine-select">
+                <option value="10">10 Guests</option>
+                <option value="20">20 Guests</option>
+                <option value="30">30 Guests</option>
+                <option value="50">50 Guests</option>
+                <option value="75">75 Guests</option>
+                <option value="100">100+ Guests</option>
+                <option value="150">150+ Guests</option>
+              </select>
+            </div>
+            <div class="dine-input-group">
+              <label for="enq-time">Preferred Time <span style="color: var(--color-dine-accent);">*</span></label>
+              <select id="enq-time" class="dine-select">
+                <option value="08:00 AM">Breakfast (08:00 AM)</option>
+                <option value="12:30 PM">Lunch (12:30 PM)</option>
+                <option value="06:00 PM">Shaam Ki Mehfil (06:00 PM)</option>
+                <option value="08:00 PM">Dinner (08:00 PM)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- TAILORED CUSTOM FIELDS SECTION -->
+          <div id="enq-tailored-section" style="margin-bottom: var(--space-md); border-top: 1px solid rgba(0,0,0,0.08); padding-top: var(--space-sm);">
+            
+            <!-- 1. Birthday Party Form -->
+            <div class="enq-custom-fields" id="enq-fields-birthday" style="display: none;">
+              <h4 style="font-family: var(--font-serif); margin-bottom: var(--space-2xs); color: var(--color-accent); font-size: 1rem;">Birthday Event Details</h4>
+              <div class="dine-form-grid">
+                <div class="dine-input-group">
+                  <label for="enq-birth-cake">Cake Size Request</label>
+                  <select id="enq-birth-cake" class="dine-select">
+                    <option value="none">No Cake Needed</option>
+                    <option value="1kg">1 kg Cake</option>
+                    <option value="2kg">2 kg Cake</option>
+                    <option value="3kg+">3+ kg Cake</option>
+                  </select>
+                </div>
+                <div class="dine-input-group">
+                  <label for="enq-birth-decor">Theme Decor</label>
+                  <select id="enq-birth-decor" class="dine-select">
+                    <option value="none">No Decor (Standard)</option>
+                    <option value="balloons">Balloons &amp; Streamers</option>
+                    <option value="flowers">Floral Arrangement</option>
+                    <option value="premium">Premium Themed Decor</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Events & Celebrations Form -->
+            <div class="enq-custom-fields" id="enq-fields-events" style="display: none;">
+              <h4 style="font-family: var(--font-serif); margin-bottom: var(--space-2xs); color: var(--color-accent); font-size: 1rem;">Event Details</h4>
+              <div class="dine-form-grid">
+                <div class="dine-input-group">
+                  <label for="enq-event-type">Celebration Type</label>
+                  <select id="enq-event-type" class="dine-select">
+                    <option value="anniversary">Anniversary</option>
+                    <option value="baby-shower">Baby Shower</option>
+                    <option value="engagement">Engagement Party</option>
+                    <option value="kitty-party">Kitty Party</option>
+                    <option value="reunion">Get Together / Reunion</option>
+                    <option value="other">Other Celebration</option>
+                  </select>
+                </div>
+                <div class="dine-input-group">
+                  <label for="enq-event-slot">Preferred Slot Exclusivity</label>
+                  <select id="enq-event-slot" class="dine-select">
+                    <option value="partial">Reserved Tables Only</option>
+                    <option value="exclusive">Semi-Private Lounge Area</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. Corporate Events & Catering Form -->
+            <div class="enq-custom-fields" id="enq-fields-corporate" style="display: none;">
+              <h4 style="font-family: var(--font-serif); margin-bottom: var(--space-2xs); color: var(--color-accent); font-size: 1rem;">Corporate Booking Details</h4>
+              <div class="dine-form-grid">
+                <div class="dine-input-group">
+                  <label for="enq-corp-name">Company Name</label>
+                  <input type="text" id="enq-corp-name" class="dine-input" placeholder="e.g. Acme Corp">
+                </div>
+                <div class="dine-input-group">
+                  <label for="enq-corp-av">Audio-Visual (AV) Needs</label>
+                  <select id="enq-corp-av" class="dine-select">
+                    <option value="no">Not Required</option>
+                    <option value="projector">Projector &amp; Screen</option>
+                    <option value="sound">Mic &amp; Sound System</option>
+                    <option value="both">Both Projector &amp; Sound</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. Catering Services Form -->
+            <div class="enq-custom-fields" id="enq-fields-catering" style="display: none;">
+              <h4 style="font-family: var(--font-serif); margin-bottom: var(--space-2xs); color: var(--color-accent); font-size: 1rem;">Outdoor Catering Details</h4>
+              <div class="dine-input-group" style="margin-bottom: var(--space-xs);">
+                <label for="enq-cat-address">Catering Delivery Location / Venue</label>
+                <input type="text" id="enq-cat-address" class="dine-input" placeholder="Enter venue full address">
+              </div>
+              <div class="dine-form-grid">
+                <div class="dine-input-group">
+                  <label for="enq-cat-diet">Dietary Preferences</label>
+                  <select id="enq-cat-diet" class="dine-select">
+                    <option value="pure-veg">Pure Vegetarian</option>
+                    <option value="veg-nonveg">Vegetarian &amp; Non-Vegetarian</option>
+                    <option value="seafood">Specialized Seafood &amp; Mixed</option>
+                  </select>
+                </div>
+                <div class="dine-input-group">
+                  <label for="enq-cat-cuisine">Primary Cuisine Preference</label>
+                  <select id="enq-cat-cuisine" class="dine-select">
+                    <option value="indian">Traditional Indian Tandoor &amp; Curries</option>
+                    <option value="chinese">Chinese &amp; Pan-Asian</option>
+                    <option value="multi">Full Multi-Cuisine Spread</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5. Party & Celebration Packages Form -->
+            <div class="enq-custom-fields" id="enq-fields-packages" style="display: none;">
+              <h4 style="font-family: var(--font-serif); margin-bottom: var(--space-2xs); color: var(--color-accent); font-size: 1rem;">Select Celebration Package</h4>
+              <div class="package-tiers-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 12px;">
+                <label class="package-tier-label">
+                  <input type="radio" name="enq-package-select" value="Silver" checked style="margin-bottom: 4px;"><br>
+                  <strong>Silver Tier</strong><br>
+                  <span style="font-size: 0.75rem; color: var(--color-text-soft);">Package details coming soon</span>
+                </label>
+                <label class="package-tier-label">
+                  <input type="radio" name="enq-package-select" value="Gold" style="margin-bottom: 4px;"><br>
+                  <strong>Gold Tier</strong><br>
+                  <span style="font-size: 0.75rem; color: var(--color-text-soft);">Package details coming soon</span>
+                </label>
+                <label class="package-tier-label">
+                  <input type="radio" name="enq-package-select" value="Platinum" style="margin-bottom: 4px;"><br>
+                  <strong>Platinum Tier</strong><br>
+                  <span style="font-size: 0.75rem; color: var(--color-text-soft);">Package details coming soon</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 6. Bulk & Pre-Orders Form -->
+            <div class="enq-custom-fields" id="enq-fields-bulk" style="display: none;">
+              <h4 style="font-family: var(--font-serif); margin-bottom: var(--space-2xs); color: var(--color-accent); font-size: 1rem;">Bulk / Pre-Order Items</h4>
+              <div class="dine-input-group" style="margin-bottom: var(--space-xs);">
+                <label for="enq-bulk-details">Dishes &amp; Quantities Needed</label>
+                <textarea id="enq-bulk-details" class="dine-input" style="min-height: 75px; font-family: inherit;" placeholder="e.g. Masala Dosa (15 plates), Poha (10 plates), Upma (5 plates)..."></textarea>
+              </div>
+              <div class="dine-input-group">
+                <label for="enq-bulk-fulfillment">Fulfillment Type</label>
+                <select id="enq-bulk-fulfillment" class="dine-select">
+                  <option value="pickup">Takeaway / Pickup from Resto</option>
+                  <option value="delivery">Deliver to my location</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 7. Private Venue Booking Form -->
+            <div class="enq-custom-fields" id="enq-fields-venue" style="display: none;">
+              <h4 style="font-family: var(--font-serif); margin-bottom: var(--space-2xs); color: var(--color-accent); font-size: 1rem;">Private Hall Reservation</h4>
+              <div class="dine-form-grid">
+                <div class="dine-input-group">
+                  <label for="enq-venue-setup">Preferred Hall Setup Style</label>
+                  <select id="enq-venue-setup" class="dine-select">
+                    <option value="round-table">Round Table / Banquet Style</option>
+                    <option value="theater">Theater / Presentation Style</option>
+                    <option value="buffet">Buffet Only / Standing Space</option>
+                  </select>
+                </div>
+                <div class="dine-input-group">
+                  <label for="enq-venue-excl">Exclusivity Level</label>
+                  <select id="enq-venue-excl" class="dine-select">
+                    <option value="exclusive">Full Hall Booking (Private)</option>
+                    <option value="semi-private">Lounge Reservation (Shared Access)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="dine-input-group" style="margin-bottom: var(--space-md);">
+            <label for="enq-notes">Additional Notes &amp; Special Requests</label>
+            <input type="text" id="enq-notes" class="dine-input" placeholder="e.g. Specific food preparation requests, decoration notes">
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="enq-submit-btn" style="width: 100%;">Submit Enquiry</button>
+        </form>
+
+        <!-- SUCCESS VIEW (Hidden by default) -->
+        <div id="enq-success-view" class="hub-success-view" style="display: none; text-align: center; padding: var(--space-lg) 0;">
+          <div style="font-size: 3.5rem; color: var(--color-accent); margin-bottom: var(--space-sm);">✨</div>
+          <h3 class="font-serif" style="font-size: 1.75rem; color: var(--color-dine-primary); margin-bottom: var(--space-xs);">Enquiry Submitted!</h3>
+          <p style="color: var(--color-text); margin-bottom: var(--space-md);">We have successfully received your service request.</p>
+          
+          <div class="dine-review-summary-box" style="text-align: left; max-width: 500px; margin: 0 auto var(--space-md);">
+            <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 8px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 8px;">
+              <span>Booking / Enquiry ID</span>
+              <span id="enq-success-id" style="color: var(--color-accent); font-family: monospace;">GR-XXXX</span>
+            </div>
+            <div style="font-size: 0.9rem; line-height: 1.6;">
+              <strong>Service:</strong> <span id="enq-success-service-name">-</span><br>
+              <strong>Date:</strong> <span id="enq-success-date">-</span><br>
+              <strong>Expected Guests:</strong> <span id="enq-success-guests">-</span><br>
+              <strong>Name:</strong> <span id="enq-success-name">-</span><br>
+              <strong>Contact:</strong> <span id="enq-success-phone">-</span>
+            </div>
+          </div>
+          
+          <p style="font-size: 0.8125rem; color: var(--color-text-soft); margin-bottom: var(--space-md);">A confirmation receipt has been sent to your email. Our operations coordinator will contact you shortly.</p>
+          
+          <button id="enq-success-close" class="btn btn-primary" style="max-width: 200px; margin: 0 auto; display: block;">Close &amp; Exit</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <!-- Main JavaScript File -->
   <script type="module" src="/src/main.js"></script>
 </body>
