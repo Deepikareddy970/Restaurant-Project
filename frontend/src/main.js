@@ -305,7 +305,16 @@ function updateMenuHeaderBranding() {
   const menuDescEl = document.querySelector(".menu-preview .text-center p");
   if (!menuTitleEl || !menuDescEl) return;
 
-  if (selectedMealTime === "Snacks") {
+  if (selectedMealTime === "Breakfast") {
+    menuTitleEl.innerHTML = `Our Multi-Cuisine <span class="italic">Menu</span> <div class="shaam-mehfil-title-badge" style="font-size: 1.5rem; margin-top: 10px; color: var(--color-accent); font-family: var(--font-serif); font-style: italic;">Subah Ka Swaad</div>`;
+    menuDescEl.innerHTML = `<strong>Fresh Start, Traditional Taste</strong><br><span style="font-size: 0.9rem; color: var(--color-text-soft);">Parathas • South Indian • Chai 🌅 (Served 7:00 AM – 10:00 AM)</span>`;
+  } else if (selectedMealTime === "Lunch") {
+    menuTitleEl.innerHTML = `Our Multi-Cuisine <span class="italic">Menu</span> <div class="shaam-mehfil-title-badge" style="font-size: 1.5rem; margin-top: 10px; color: var(--color-accent); font-family: var(--font-serif); font-style: italic;">Dopahar Ka Daawat</div>`;
+    menuDescEl.innerHTML = `<strong>A Hearty Midday Feast</strong><br><span style="font-size: 0.9rem; color: var(--color-text-soft);">Thalis • Curries • Rice Specials ☀️ (Served 12:00 PM – 3:00 PM)</span>`;
+  } else if (selectedMealTime === "Dinner") {
+    menuTitleEl.innerHTML = `Our Multi-Cuisine <span class="italic">Menu</span> <div class="shaam-mehfil-title-badge" style="font-size: 1.5rem; margin-top: 10px; color: var(--color-accent); font-family: var(--font-serif); font-style: italic;">Shahi Dastarkhwan</div>`;
+    menuDescEl.innerHTML = `<strong>An Elegant Culinary Finale</strong><br><span style="font-size: 0.9rem; color: var(--color-text-soft);">Tandoori Specialties • Biryani • Rich Gravies 🌙 (Served 6:30 PM – 10:00 PM)</span>`;
+  } else if (selectedMealTime === "Snacks") {
     menuTitleEl.innerHTML = `Our Multi-Cuisine <span class="italic">Menu</span> <div class="shaam-mehfil-title-badge" style="font-size: 1.5rem; margin-top: 10px; color: var(--color-accent); font-family: var(--font-serif); font-style: italic;">Shaam Ki Mehfil</div>`;
     menuDescEl.innerHTML = `<strong>Har Shaam, Kuch Khaas</strong><br><span style="font-size: 0.9rem; color: var(--color-text-soft);">Café • Chaat • Snacks ☕ (Served 5:00 PM – 9:00 PM)</span>`;
   } else {
