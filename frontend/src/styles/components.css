@@ -3582,5 +3582,102 @@
   }
 }
 
+/* ====================================================
+   WIZARD MODAL COMPACT LAYOUT & TEXT VISIBILITY FIXES
+   ==================================================== */
+
+/* 1. Maximize modal height and reduce padding on shorter screens */
+@media (max-height: 850px) {
+  .dine-modal-container {
+    height: 96vh !important;
+  }
+  
+  #dine-in-modal .dine-modal-body,
+  #order-online-modal .dine-modal-body {
+    padding: var(--space-md) var(--space-lg) !important;
+  }
+}
+
+/* 2. Compact filter row inside the stepped modals */
+#dine-in-modal .dine-search-filter-row,
+#order-online-modal .dine-search-filter-row {
+  margin-bottom: var(--space-xs) !important;
+  gap: var(--space-2xs) !important;
+}
+
+#dine-in-modal .dine-search-input,
+#order-online-modal .dine-search-input {
+  padding: 8px 12px !important;
+  font-size: 0.9rem !important;
+  margin-bottom: 0 !important;
+}
+
+/* 3. Compact Meal-Time Selector cards in modals */
+#dine-in-modal .meal-time-selector,
+#order-online-modal .meal-time-selector {
+  gap: var(--space-xs) !important;
+  margin-bottom: var(--space-3xs) !important;
+}
+
+#dine-in-modal .meal-card,
+#order-online-modal .meal-card {
+  padding: var(--space-xs) var(--space-2xs) !important;
+  border-radius: var(--border-radius-md) !important;
+  min-height: 70px !important;
+}
+
+#dine-in-modal .meal-card .meal-icon,
+#order-online-modal .meal-card .meal-icon {
+  font-size: 1.5rem !important;
+  margin-bottom: 2px !important;
+}
+
+#dine-in-modal .meal-card .meal-label,
+#order-online-modal .meal-card .meal-label {
+  font-size: 0.8rem !important;
+}
+
+/* 4. Compact Veg/Non-Veg toggle in modals */
+#dine-in-modal .meal-toggle-container,
+#order-online-modal .meal-toggle-container {
+  margin-bottom: var(--space-2xs) !important;
+}
+
+#dine-in-modal .veg-nonveg-toggle-btn,
+#order-online-modal .veg-nonveg-toggle-btn {
+  padding: 6px 16px !important;
+  font-size: 0.75rem !important;
+}
+
+/* 5. Improved Visibility & Contrast of Dish Cards */
+.dine-modal-body .dine-dish-card {
+  border: 1px solid rgba(13, 92, 117, 0.16) !important;
+  box-shadow: 0 4px 12px rgba(13, 92, 117, 0.06) !important;
+  padding: var(--space-xs) !important;
+  background-color: #ffffff !important;
+}
+
+.dine-modal-body .dine-dish-info h4 {
+  font-size: 0.95rem !important;
+  color: var(--color-dine-primary) !important;
+  font-weight: 700 !important;
+  margin-bottom: 4px !important;
+}
+
+.dine-modal-body .dine-dish-desc {
+  font-size: 0.75rem !important;
+  color: #3f3633 !important; /* Higher contrast text (dark charcoal) */
+  margin-bottom: 8px !important;
+  line-height: 1.35 !important;
+}
+
+.dine-modal-body .dine-dish-price {
+  font-size: 0.9rem !important;
+  color: var(--color-dine-primary) !important;
+  font-weight: 800 !important;
+  margin-bottom: var(--space-3xs) !important;
+}
+
+
 
 
