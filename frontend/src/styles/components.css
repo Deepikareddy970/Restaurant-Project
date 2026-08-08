@@ -3678,6 +3678,19 @@
   margin-bottom: var(--space-3xs) !important;
 }
 
+/* Active state colors for dine and online toggles */
+.veg-nonveg-toggle-btn.active[data-dine-diet="Veg"],
+.veg-nonveg-toggle-btn.active[data-online-diet="Veg"] {
+  background-color: #2e7d32 !important;
+  color: #ffffff !important;
+}
+
+.veg-nonveg-toggle-btn.active[data-dine-diet="Non-Veg"],
+.veg-nonveg-toggle-btn.active[data-online-diet="Non-Veg"] {
+  background-color: #c62828 !important;
+  color: #ffffff !important;
+}
+
 
 
 

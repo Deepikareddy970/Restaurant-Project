@@ -63,12 +63,12 @@ async function test() {
 
   console.log(`Total items parsed: ${flatItems.length}`);
   
-  const snacks = flatItems.filter(item => item.category === "Snacks");
-  console.log(`Total Snacks parsed: ${snacks.length}`);
-  if (snacks.length > 0) {
-    console.log("Sample Snack item:", snacks[0]);
-    console.log("Diet Type for sample Snack item:", getMenuItemDietType(snacks[0]));
-    console.log("Meal Times for sample Snack item:", getMenuItemMealTimes(snacks[0]));
+  const breakfast = flatItems.filter(item => item.category === "Breakfast");
+  console.log(`Total Breakfast parsed: ${breakfast.length}`);
+  if (breakfast.length > 0) {
+    console.log("Sample Breakfast item:", breakfast[0]);
+    console.log("Diet Type for sample Breakfast item:", getMenuItemDietType(breakfast[0]));
+    console.log("Meal Times for sample Breakfast item:", getMenuItemMealTimes(breakfast[0]));
   }
 }
 

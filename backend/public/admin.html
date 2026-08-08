@@ -388,7 +388,9 @@
       <!-- Tabs -->
       <div class="tabs">
         <button id="tab-btn-reservations" class="tab-btn active" onclick="switchTab('tab-reservations')">Table Reservations</button>
+        <button id="tab-btn-enquiries" class="tab-btn" onclick="switchTab('tab-enquiries')">Service Enquiries</button>
         <button id="tab-btn-orders" class="tab-btn" onclick="switchTab('tab-orders')">Dine-In Orders</button>
+        <button id="tab-btn-online" class="tab-btn" onclick="switchTab('tab-online')">Online Orders</button>
       </div>
 
       <!-- Tab Reservations -->
@@ -433,6 +435,48 @@
         </div>
       </div>
 
+      <!-- Tab Enquiries -->
+      <div id="tab-enquiries" class="tab-content">
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Enquiries</div>
+            <div class="stat-value" id="stat-total-enquiries">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Expected Guests</div>
+            <div class="stat-value" id="stat-total-enquiry-guests">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Today's Enquiries</div>
+            <div class="stat-value" id="stat-today-enquiries">0</div>
+          </div>
+        </div>
+
+        <!-- Enquiries Table -->
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Event Date &amp; Time</th>
+                <th>Customer</th>
+                <th>Service Type</th>
+                <th>Expected Guests</th>
+                <th>Custom Preferences / Notes</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="enquiries-tbody">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+          <div id="enquiries-empty-view" class="empty-state" style="display: none;">
+            No service enquiries found.
+          </div>
+        </div>
+      </div>
+
       <!-- Tab Orders -->
       <div id="tab-orders" class="tab-content">
         <!-- Stats -->
@@ -470,6 +514,48 @@
           </table>
           <div id="orders-empty-view" class="empty-state" style="display: none;">
             No orders placed yet.
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Online Orders -->
+      <div id="tab-online" class="tab-content">
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Active Orders</div>
+            <div class="stat-value" id="stat-active-online">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Completed Orders</div>
+            <div class="stat-value" id="stat-completed-online">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Revenue</div>
+            <div class="stat-value" id="stat-total-online-revenue">₹0</div>
+          </div>
+        </div>
+
+        <!-- Online Orders Table -->
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Time &amp; Type</th>
+                <th>Customer Info</th>
+                <th>Delivery Details</th>
+                <th>Items Ordered</th>
+                <th>Total</th>
+                <th>Order Status</th>
+              </tr>
+            </thead>
+            <tbody id="online-tbody">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+          <div id="online-empty-view" class="empty-state" style="display: none;">
+            No online orders placed yet.
           </div>
         </div>
       </div>
@@ -554,11 +640,9 @@
         content.classList.remove('active');
       });
       
-      if (tabId === 'tab-reservations') {
-        document.getElementById('tab-btn-reservations').classList.add('active');
-      } else {
-        document.getElementById('tab-btn-orders').classList.add('active');
-      }
+      const btnId = 'tab-btn-' + tabId.replace('tab-', '');
+      const btnEl = document.getElementById(btnId);
+      if (btnEl) btnEl.classList.add('active');
       
       const tabEl = document.getElementById(tabId);
       if (tabEl) tabEl.classList.add('active');
@@ -591,11 +675,25 @@
         authPanel.style.display = 'none';
         dashboardPanel.style.display = 'block';
 
-        renderStats(bookings);
-        renderTable(bookings);
+        // Filter Bookings into Reservations vs Service Enquiries
+        const tableReservations = bookings.filter(b => b.seating !== 'Enquiry Form');
+        const serviceEnquiries = bookings.filter(b => b.seating === 'Enquiry Form');
+
+        // Filter Orders into Dine-In vs Online (Delivery/Takeaway)
+        const dineInOrders = orders.filter(o => o.orderType === 'dine-in');
+        const onlineOrders = orders.filter(o => o.orderType === 'delivery' || o.orderType === 'takeaway');
+
+        renderStats(tableReservations);
+        renderTable(tableReservations);
         
-        renderOrdersStats(orders);
-        renderOrdersTable(orders);
+        renderEnquiriesStats(serviceEnquiries);
+        renderEnquiriesTable(serviceEnquiries);
+        
+        renderOrdersStats(dineInOrders);
+        renderOrdersTable(dineInOrders);
+
+        renderOnlineStats(onlineOrders);
+        renderOnlineTable(onlineOrders);
         
         return true;
       } catch (err) {
@@ -670,6 +768,82 @@
       });
     }
 
+    function renderEnquiriesStats(enquiries) {
+      document.getElementById('stat-total-enquiries').textContent = enquiries.length;
+      
+      const totalGuests = enquiries.reduce((sum, e) => sum + (parseInt(e.partySize) || 0), 0);
+      document.getElementById('stat-total-enquiry-guests').textContent = totalGuests;
+
+      const todayStr = new Date().toISOString().split('T')[0];
+      const todayCount = enquiries.filter(e => e.date === todayStr).length;
+      document.getElementById('stat-today-enquiries').textContent = todayCount;
+    }
+
+    function renderEnquiriesTable(enquiries) {
+      const enquiriesTbody = document.getElementById('enquiries-tbody');
+      const enquiriesEmptyView = document.getElementById('enquiries-empty-view');
+      
+      if (!enquiriesTbody) return;
+      enquiriesTbody.innerHTML = '';
+      
+      if (enquiries.length === 0) {
+        if (enquiriesEmptyView) enquiriesEmptyView.style.display = 'block';
+        return;
+      }
+      
+      if (enquiriesEmptyView) enquiriesEmptyView.style.display = 'none';
+
+      enquiries.forEach(enq => {
+        const tr = document.createElement('tr');
+        
+        const bookingDate = new Date(enq.date);
+        const formattedDate = bookingDate.toLocaleDateString('en-IN', {
+          day: 'numeric', month: 'short', year: 'numeric'
+        });
+
+        // Format Preferences/Notes nicely from "Cake: ... | Decor: ..."
+        let notesHTML = '';
+        if (enq.notes) {
+          const parts = enq.notes.split(' | ');
+          notesHTML = parts.map(part => {
+            const index = part.indexOf(':');
+            if (index > -1) {
+              const label = part.substring(0, index).trim();
+              const val = part.substring(index + 1).trim();
+              return `<div style="margin-bottom: 4px; font-size: 0.85rem;"><strong style="color: var(--color-accent-sec);">${escapeHTML(label)}:</strong> ${escapeHTML(val)}</div>`;
+            }
+            return `<div style="margin-bottom: 4px; font-size: 0.85rem;">${escapeHTML(part)}</div>`;
+          }).join('');
+        } else {
+          notesHTML = '<span style="color: rgba(46, 37, 34, 0.3); font-style: italic;">None</span>';
+        }
+
+        tr.innerHTML = `
+          <td style="font-weight: 600; font-family: monospace; font-size: 0.85rem;">${enq.bookingId}</td>
+          <td>
+            <div style="font-weight: 600;">${formattedDate}</div>
+            <div style="font-size: 0.8rem; color: rgba(46, 37, 34, 0.6);">${enq.time}</div>
+          </td>
+          <td>
+            <div style="font-weight: 600;">${escapeHTML(enq.name)}</div>
+            <div style="font-size: 0.8rem; color: rgba(46, 37, 34, 0.6);">${escapeHTML(enq.phone)}</div>
+            <div style="font-size: 0.8rem; color: rgba(46, 37, 34, 0.6);">${escapeHTML(enq.email)}</div>
+          </td>
+          <td>
+            <span class="badge badge-business" style="background-color: var(--color-accent-sec); color: white;">${escapeHTML(enq.occasion)}</span>
+          </td>
+          <td style="font-weight: 600; font-size: 1.1rem; text-align: center;">${enq.partySize}</td>
+          <td style="max-width: 300px; word-wrap: break-word;">
+            ${notesHTML}
+          </td>
+          <td>
+            <span class="badge badge-confirmed">Enquiry</span>
+          </td>
+        `;
+        enquiriesTbody.appendChild(tr);
+      });
+    }
+
     function renderOrdersStats(orders) {
       const activeCount = orders.filter(o => o.status !== 'completed').length;
       document.getElementById('stat-active-orders').textContent = activeCount;
@@ -713,7 +887,7 @@
         tr.innerHTML = `
           <td style="font-weight: 600; font-family: monospace; font-size: 0.85rem;">${order.orderId}</td>
           <td>
-            <div style="font-weight: 600;">${escapeHTML(order.tableNumber)}</div>
+            <div style="font-weight: 600;">${escapeHTML(order.tableNumber || 'Table N/A')}</div>
             <div style="font-size: 0.8rem; color: rgba(46, 37, 34, 0.6);">${orderDate} @ ${orderTime}</div>
           </td>
           <td>
@@ -736,6 +910,97 @@
           </td>
         `;
         ordersTbody.appendChild(tr);
+      });
+    }
+
+    function renderOnlineStats(orders) {
+      const activeCount = orders.filter(o => o.status !== 'completed').length;
+      document.getElementById('stat-active-online').textContent = activeCount;
+      
+      const completedCount = orders.filter(o => o.status === 'completed').length;
+      document.getElementById('stat-completed-online').textContent = completedCount;
+      
+      const totalRev = orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+      document.getElementById('stat-total-online-revenue').textContent = `₹${totalRev}`;
+    }
+
+    function renderOnlineTable(orders) {
+      const onlineTbody = document.getElementById('online-tbody');
+      const onlineEmptyView = document.getElementById('online-empty-view');
+      
+      if (!onlineTbody) return;
+      onlineTbody.innerHTML = '';
+      
+      if (orders.length === 0) {
+        if (onlineEmptyView) onlineEmptyView.style.display = 'block';
+        return;
+      }
+      
+      if (onlineEmptyView) onlineEmptyView.style.display = 'none';
+
+      orders.forEach(order => {
+        const tr = document.createElement('tr');
+        const orderTime = new Date(order.createdAt).toLocaleTimeString('en-IN', {
+          hour: '2-digit', minute: '2-digit'
+        });
+        const orderDate = new Date(order.createdAt).toLocaleDateString('en-IN', {
+          day: 'numeric', month: 'short'
+        });
+
+        // Items display list
+        const itemsList = order.items.map(item => {
+          const sizeInfo = item.size ? ` (${item.size})` : '';
+          return `<div style="font-size: 0.9rem;">• ${escapeHTML(item.name)}${sizeInfo} x ${item.quantity} (₹${item.price})</div>`;
+        }).join('');
+
+        // Type: Delivery or Takeaway
+        const isDelivery = order.orderType === 'delivery';
+        const typeBadge = isDelivery 
+          ? `<span class="badge badge-business" style="background-color: #3b82f6; color: white;">Delivery</span>`
+          : `<span class="badge badge-anniversary" style="background-color: #f59e0b; color: white;">Takeaway</span>`;
+
+        let deliveryHTML = '';
+        if (isDelivery) {
+          deliveryHTML = `
+            <div style="font-size: 0.85rem; max-width: 250px; word-wrap: break-word;">
+              <strong>Address:</strong> ${escapeHTML(order.deliveryAddress)}<br>
+              <strong>Pincode:</strong> ${escapeHTML(order.pincode)}<br>
+              ${order.landmark ? `<strong>Landmark:</strong> ${escapeHTML(order.landmark)}` : ''}
+            </div>
+          `;
+        } else {
+          deliveryHTML = `<span style="color: rgba(46, 37, 34, 0.4); font-style: italic;">Self-Pickup</span>`;
+        }
+
+        tr.innerHTML = `
+          <td style="font-weight: 600; font-family: monospace; font-size: 0.85rem;">${order.orderId}</td>
+          <td>
+            <div style="margin-bottom: 4px;">${typeBadge}</div>
+            <div style="font-size: 0.8rem; color: rgba(46, 37, 34, 0.6);">${orderDate} @ ${orderTime}</div>
+          </td>
+          <td>
+            <div style="font-weight: 600;">${escapeHTML(order.customerName)}</div>
+            <div style="font-size: 0.8rem; color: rgba(46, 37, 34, 0.6);">${escapeHTML(order.customerPhone)}</div>
+            <div style="font-size: 0.8rem; color: rgba(46, 37, 34, 0.6);">${escapeHTML(order.customerEmail)}</div>
+          </td>
+          <td>
+            ${deliveryHTML}
+          </td>
+          <td>
+            <div style="max-height: 120px; overflow-y: auto;">${itemsList}</div>
+          </td>
+          <td style="font-weight: 700; color: var(--color-accent); font-size: 1.05rem;">₹${order.totalAmount}</td>
+          <td>
+            <select class="status-select badge-${order.status}" data-prev-value="${order.status}" onchange="updateOrderStatus('${order.orderId}', this.value, this)">
+              <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
+              <option value="cooking" ${order.status === 'cooking' ? 'selected' : ''}>Cooking</option>
+              <option value="ready" ${order.status === 'ready' ? 'selected' : ''}>Ready</option>
+              <option value="served" ${order.status === 'served' ? 'selected' : ''}>Served</option>
+              <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>Completed</option>
+            </select>
+          </td>
+        `;
+        onlineTbody.appendChild(tr);
       });
     }
 
